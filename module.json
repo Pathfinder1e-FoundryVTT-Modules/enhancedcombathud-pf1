@@ -24,6 +24,13 @@
       }
     ]
   },
+  "authors": [
+    {
+      "name": "KitCat",
+      "email": "katsulynx@gmail.com",
+      "discord": "kitcat"
+    }
+  ],
   "esmodules": [
     "modules/ech-pf1.mjs"
   ],
@@ -41,5 +48,7 @@
       "name": "Deutsch (German)",
       "path": "lang/de.json"
     }
-  ]
+  ],
+  "url": "https://gitlab.com/katsulynx/enhancedcombathud-pf1",
+  "bugs": "https://gitlab.com/katsulynx/enhancedcombathud-pf1/-/issues"
 }
