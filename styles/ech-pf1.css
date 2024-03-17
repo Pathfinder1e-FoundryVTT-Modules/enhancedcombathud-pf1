@@ -1,0 +1,21 @@
+.extended-combat-hud .action-hud .features-container.show {
+    z-index: 1;
+    pointer-events: all;
+}
+
+.extended-combat-hud .action-hud .actions-container > .feature-element {
+    width: 200px;
+    height: 200px;
+    flex: 0 0 200px;
+    margin-top: 0;
+    margin-right: 0;
+}
+
+.extended-combat-hud .action-hud .features-container .action-element {
+    height: 150px;
+    width: 150px;
+    margin-right: 1rem;
+    margin-top: 1rem;
+    min-width: 150px;
+    min-height: 150px;
+}

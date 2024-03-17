@@ -1,0 +1,64 @@
+{
+  "ECHPF1": {
+    "MR": "LR",
+    "Abbr": {
+      "ACFlatFooted": "AdfF RK",
+      "ACTouch": "B-RK",
+      "ACNormal": "RK",
+      "CMDTotal": "KMV",
+      "CMDFlatFootedTotal": "AdfF KMV"
+    },
+    "Actions": {
+      "Maneuver": "Kampfmanöver",
+      "Feint": "Finte",
+      "Grapple": "Ringkampf",
+      "Trip": "Zu Fall bringen",
+      "Disarm": "Entwaffnen",
+      "Sunder": "Gegenstand zerschmettern",
+      "BullRush": "Ansturm",
+      "Overrun": "Überrennen",
+      "DirtyTrick": "Schmutziger Trick",
+      "Steal": "Entreißen",
+      "Drag": "Zerren",
+      "Reposition": "Versetzen",
+      "TotalDefense": "Volle Verteidigung",
+      "Withdraw": "Rückzug",
+      "AidAnother": "Jemand anderem helfen",
+      "CoupDeGrace": "Coup de Grace",
+      "FightDefensively": "Fight Defensively",
+      "DropItem": "Gegentand fallen lassen",
+      "StandUp": "Aufstehen",
+      "DropProne": "Auf den Boden fallen lassen",
+      "DrawSheathe": "Waffe ziehen/wegstecken",
+      "AidAnotherAttack": "Jemand anderem helfen (Angriff)",
+      "AidAnotherDefense": "Jemand anderem helfen (Verteidigung)",
+      "Charge": "Sturmangriff"
+    },
+    "ActionTypes": {
+      "Full": "Volle Runde",
+      "Standard": "Standard",
+      "Move": "Bewegung",
+      "Swift": "Schnell",
+      "Immediate": "Augenblicklich",
+      "Free": "Freie",
+      "None": "Keine"
+    },
+    "ItemTypes": {
+      "Spell": "Zauber",
+      "Feat": "Fertigkeit",
+      "Consumable": "Gegenstand"
+    },
+    "SpellLevels": {
+      "0": "Zaubertrick/Gebet",
+      "1": "1. Grad",
+      "2": "2. Grad",
+      "3": "3. Grad",
+      "4": "4. Grad",
+      "5": "5. Grad",
+      "6": "6. Grad",
+      "7": "7. Grad",
+      "8": "8. Grad",
+      "9": "9. Grad"
+    }
+  }
+}

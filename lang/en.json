@@ -1,0 +1,64 @@
+{
+  "ECHPF1": {
+    "MR": "MR",
+    "Abbr": {
+      "ACFlatFooted": "FF AC",
+      "ACTouch": "T AC",
+      "ACNormal": "AC",
+      "CMDTotal": "CMD",
+      "CMDFlatFootedTotal": "FF CMD"
+    },
+    "Actions": {
+      "Maneuver": "Combat Maneuever",
+      "Feint": "Feint",
+      "Grapple": "Grapple",
+      "Trip": "Trip",
+      "Disarm": "Disarm",
+      "Sunder": "Sunder",
+      "BullRush": "Bull Rush",
+      "Overrun": "Overrun",
+      "DirtyTrick": "Dirty Trick",
+      "Steal": "Steal",
+      "Drag": "Drag",
+      "Reposition": "Reposition",
+      "TotalDefense": "Total Defense",
+      "Withdraw": "Withdraw",
+      "AidAnother": "Aid Another",
+      "CoupDeGrace": "Coup de Grace",
+      "FightDefensively": "Fight Defensively",
+      "DropItem": "Drop Item",
+      "StandUp": "Stand Up",
+      "DropProne": "Drop Prone",
+      "DrawSheathe": "Draw/Sheathe Weapon",
+      "AidAnotherAttack": "Aid Another (Attack)",
+      "AidAnotherDefense": "Aid Another (Defense)",
+      "Charge": "Charge"
+    },
+    "ActionTypes": {
+      "Full": "Full Round",
+      "Standard": "Standard",
+      "Move": "Move",
+      "Swift": "Swift",
+      "Immediate": "Immediate",
+      "Free": "Free",
+      "None": "None"
+    },
+    "ItemTypes": {
+      "Spell": "Spell",
+      "Feat": "Feature",
+      "Consumable": "Consumable"
+    },
+    "SpellLevels": {
+      "0": "Cantrip/Orison",
+      "1": "1st Level",
+      "2": "2nd Level",
+      "3": "3rd Level",
+      "4": "4th Level",
+      "5": "5th Level",
+      "6": "6th Level",
+      "7": "7th Level",
+      "8": "8th Level",
+      "9": "9th Level"
+    }
+  }
+}

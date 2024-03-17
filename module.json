@@ -1,0 +1,45 @@
+{
+  "id": "enhancedcombathud-pf1",
+  "title": "Argon - Combat HUD (PF1)",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "relationships": {
+    "requires": [
+      {
+        "id": "enhancedcombathud",
+        "type": "module",
+        "compatibility": {}
+      }
+    ],
+    "systems": [
+      {
+        "id": "pf1",
+        "type": "system",
+        "compatibility": {
+          "minimum": "9.6"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "modules/ech-pf1.mjs"
+  ],
+  "styles": [
+    "styles/ech-pf1.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch (German)",
+      "path": "lang/de.json"
+    }
+  ]
+}
