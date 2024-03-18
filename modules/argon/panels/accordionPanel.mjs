@@ -23,6 +23,10 @@ export function accordionPanelCategory(ARGON) {
             this.isAccordionPanelCategory = true;
         }
 
+        get buttonMultipliers() {
+            return [2, 3, 4, 5, 6, 7];
+        }
+
         use() {
             this.uses.value--;
             this.setUses();

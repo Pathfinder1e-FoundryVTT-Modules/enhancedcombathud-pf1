@@ -19,3 +19,7 @@
     min-width: 150px;
     min-height: 150px;
 }
+
+.extended-combat-hud .action-hud .features-container .feature-element {
+    background-color: black;
+}

@@ -1,7 +1,17 @@
 export function weaponSets(ARGON) {
     return class Pathfinder1eWeaponSets extends ARGON.WeaponSets {
         get weapons() {
-            return this.actor.items.filter(item => item.type === "weapon");
+            return this.actor.items.filter(item => {
+                if (item.type === "weapon") {
+                    return true;
+                }
+
+                if (item.type !== "equipment") {
+                    return false;
+                }
+
+                return item.system.subType === "shield";
+            });
         }
 
         async _onSetChange({sets, active}) {

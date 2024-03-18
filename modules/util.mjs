@@ -8,7 +8,7 @@ export function unique(array) {
 
 export function useAction(actionType, nest = true) {
     let panels = {}
-    for(const panel of ui.ARGON.components.main) {
+    for (const panel of ui.ARGON.components.main) {
         panels[panel.actionType] = panel;
     }
 
@@ -62,7 +62,7 @@ export async function createBuff(actor, buffId) {
                 "tags": [],
                 "changes": [{
                     "_id": "ntuwfvbl",
-                    "formula": "4",
+                    "formula": "@skills.acr.rank>=3?6:4",
                     "operator": "add",
                     "subTarget": "ac",
                     "modifier": "dodge",
@@ -153,4 +153,75 @@ export async function createBuff(actor, buffId) {
     }
     await actor.createEmbeddedDocuments("Item", [buff]);
     return actor.getItemByTag(buffId);
+}
+
+export const spellSchools = {
+    abj: "PF1.SpellSchoolAbjuration",
+    con: "PF1.SpellSchoolConjuration",
+    div: "PF1.SpellSchoolDivination",
+    enc: "PF1.SpellSchoolEnchantment",
+    evo: "PF1.SpellSchoolEvocation",
+    ill: "PF1.SpellSchoolIllusion",
+    nec: "PF1.SpellSchoolNecromancy",
+    trs: "PF1.SpellSchoolTransmutation",
+    uni: "PF1.SpellSchoolUniversal",
+    misc: "PF1.Misc",
+};
+
+export const abilityTypes = {
+    ex: {
+        short: "PF1.AbilityTypeShortExtraordinary",
+        long: "PF1.AbilityTypeExtraordinary",
+    },
+    su: {
+        short: "PF1.AbilityTypeShortSupernatural",
+        long: "PF1.AbilityTypeSupernatural",
+    },
+    sp: {
+        short: "PF1.AbilityTypeShortSpell-Like",
+        long: "PF1.AbilityTypeSpell-Like",
+    },
+};
+export const weaponProperties = {
+    ato: "PF1.WeaponPropAutomatic",
+    blc: "PF1.WeaponPropBlocking",
+    brc: "PF1.WeaponPropBrace",
+    dea: "PF1.WeaponPropDeadly",
+    dst: "PF1.WeaponPropDistracting",
+    dbl: "PF1.WeaponPropDouble",
+    dis: "PF1.WeaponPropDisarm",
+    fin: "PF1.WeaponPropFinesse",
+    frg: "PF1.WeaponPropFragile",
+    grp: "PF1.WeaponPropGrapple",
+    imp: "PF1.WeaponPropImprovised",
+    mnk: "PF1.WeaponPropMonk",
+    nnl: "PF1.WeaponPropNonLethal",
+    prf: "PF1.WeaponPropPerformance",
+    rch: "PF1.WeaponPropReach",
+    sct: "PF1.WeaponPropScatter",
+    snd: "PF1.WeaponPropSunder",
+    spc: "PF1.WeaponPropSpecial",
+    thr: "PF1.WeaponPropThrown",
+    trp: "PF1.WeaponPropTrip",
+};
+
+export function getDistanceSystem() {
+    let system = game.settings.get("pf1", "distanceUnits"); // override
+    if (system === "default") system = game.settings.get("pf1", "units");
+    return system;
+}
+
+export function convertDistance(value, type = "ft") {
+    const system = getDistanceSystem();
+    switch (system) {
+        case "metric":
+            switch (type) {
+                case "mi":
+                    return [Math.round(value * 1.6 * 100) / 100, "km"];
+                default:
+                    return [Math.round((value / 5) * 1.5 * 100) / 100, "m"];
+            }
+        default:
+            return [value, type];
+    }
 }
