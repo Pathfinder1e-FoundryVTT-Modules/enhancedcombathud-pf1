@@ -126,6 +126,10 @@ export function buttonPanelItemButton(ARGON) {
                     return false;
                 }
 
+                if(item.isCharged && !item.charges) {
+                    return false;
+                }
+
                 for (let action of item.actions) {
                     if (action.data.activation.type === this.actionType
                         && action.data.activation.cost === 1) {
@@ -149,6 +153,8 @@ export function buttonPanelItemButton(ARGON) {
             switch (this.type) {
                 case "consumable":
                     return `modules/${ModuleName}/icons/vial.svg`;
+                case "equipment":
+                    return `modules/${ModuleName}/icons/gem-chain.svg`;
                 case "feat":
                     return "modules/enhancedcombathud/icons/svg/mighty-force.svg";
             }
@@ -157,8 +163,6 @@ export function buttonPanelItemButton(ARGON) {
         async _getPanel() {
             const ButtonPanel = buttonPanel(ARGON);
             const ItemButton = itemButton(ARGON);
-            const AccordionPanel = accordionPanel(ARGON);
-            const AccordionPanelCategory = accordionPanelCategory(ARGON);
 
             switch (this.type) {
                 default:

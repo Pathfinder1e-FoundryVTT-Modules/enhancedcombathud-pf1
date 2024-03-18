@@ -10,7 +10,7 @@ export function accordionPanel(ARGON) {
 
         hideAll() {
             this._subPanels.forEach(panel => {
-                if(panel.element.classList.contains("show")) panel.toggle(false)
+                if (panel.element.classList.contains("show")) panel.toggle(false)
             });
         }
     }
@@ -18,6 +18,16 @@ export function accordionPanel(ARGON) {
 
 export function accordionPanelCategory(ARGON) {
     return class Pathfinder1eAccordionPanelCategory extends ARGON.MAIN.BUTTON_PANELS.ACCORDION.AccordionPanelCategory {
+        constructor(args) {
+            super(args);
+            this.isAccordionPanelCategory = true;
+        }
+
+        use() {
+            this.uses.value--;
+            this.setUses();
+        }
+
 
         toggle(toggle, noTransition = false) {
             const hide = this.element.classList.contains("show");

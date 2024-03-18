@@ -1,5 +1,31 @@
 {
   "ECHPF1": {
+    "Settings": {
+      "ShowActionPanelStandard": {
+        "name": "Standardaktionen anzeigen",
+        "desc": "Zeigt die Standardaktionen im Aktionspanel an."
+      },
+      "ShowActionPanelMove": {
+        "name": "Bewegungsaktionen anzeigen",
+        "desc": "Zeigt die Bewegungsaktionen im Aktionspanel an."
+      },
+      "ShowActionPanelSwift": {
+        "name": "Schnelle Aktionen anzeigen",
+        "desc": "Zeigt die schnellen Aktionen im Aktionspanel an."
+      },
+      "ShowActionPanelFull": {
+        "name": "Volle Aktionen anzeigen",
+        "desc": "Zeigt die vollen Aktionen im Aktionspanel an."
+      },
+      "ShowActionPanelFree": {
+        "name": "Freie Aktionen anzeigen",
+        "desc": "Zeigt die freien Aktionen im Aktionspanel an."
+      },
+      "ShowMacroPanel": {
+        "name": "Makro-Panel anzeigen",
+        "desc": "Zeigt das Makro-Panel an."
+      }
+    },
     "MR": "LR",
     "Abbr": {
       "ACFlatFooted": "AdfF RK",
@@ -25,14 +51,15 @@
       "Withdraw": "Rückzug",
       "AidAnother": "Jemand anderem helfen",
       "CoupDeGrace": "Coup de Grace",
-      "FightDefensively": "Fight Defensively",
+      "FightingDefensively": "Fight Defensively",
       "DropItem": "Gegentand fallen lassen",
       "StandUp": "Aufstehen",
       "DropProne": "Auf den Boden fallen lassen",
       "DrawSheathe": "Waffe ziehen/wegstecken",
       "AidAnotherAttack": "Jemand anderem helfen (Angriff)",
       "AidAnotherDefense": "Jemand anderem helfen (Verteidigung)",
-      "Charge": "Sturmangriff"
+      "Charge": "Sturmangriff",
+      "None": ""
     },
     "ActionTypes": {
       "Full": "Volle Runde",
@@ -46,7 +73,8 @@
     "ItemTypes": {
       "Spell": "Zauber",
       "Feat": "Fertigkeit",
-      "Consumable": "Gegenstand"
+      "Consumable": "Verbrauchsgut",
+      "Equipment": "Ausrüstung"
     },
     "SpellLevels": {
       "0": "Zaubertrick/Gebet",
@@ -59,6 +87,20 @@
       "7": "7. Grad",
       "8": "8. Grad",
       "9": "9. Grad"
+    },
+    "Buffs": {
+      "Names": {
+        "FightingDefensively": "Defensive Kampfweise",
+        "TotalDefense": "Volle Verteidigung"
+      },
+      "Descriptions": {
+        "TotalDefense": "<p>Du kannst dich als Standard-Aktion selbst verteidigung. Du erhältst einen Ausweichbonus von +4 auf deine RK für 1 Runde. Dein RK-Bonus beginnt mit dem Start dieser Aktion. Du kannst nicht in Defensive Kampfweise gehen oder die Vorteile des Talentes Defensive Kampfweise genießen, während du in Voller Verteidigung bist. DU kannst keine Gelegenheitsangriffe ausfphren, während du in Voller Verteidigung bist.</p>",
+        "FightingDefensively": "<p>Du kannst dich während eines Angriffs entscheiden, defensiv zu kämpfen. Wenn du das tust, erhältst du einen Malus von -4 auf alle Angriffe in dieser Runde und einen Ausweichbonus von +2 auf deine RK für 1 Runde.</p>"
+      },
+      "ContextNotes": {
+        "TotalDefense1": "Volle Verteidigung kann nicht mit Defensive Kampfweise kombiniert werden.",
+        "TotalDefense2": "Kann keine Gelegenheitsangriffe ausführen, da in Voller Verteidigung."
+      }
     }
   }
 }

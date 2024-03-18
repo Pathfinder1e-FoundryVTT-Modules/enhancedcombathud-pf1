@@ -90,9 +90,6 @@ export function playerPortraitPanel(ARGON) {
         }
 
         async getBarsCreature() {
-            const widthScale = game.settings.get(ModuleName, "HealthBarWidthScale");
-            const heightScale = game.settings.get(ModuleName, "HealthBarHeightScale");
-            const minScale = Math.min(widthScale, heightScale);
             const cornerCut = 30; //px
             const woundsHeightPart = 0.4;
             const tempHeightPart = 0.7;
@@ -101,8 +98,8 @@ export function playerPortraitPanel(ARGON) {
 
             //probably better as css classes, but oh well
             const bars = document.createElement("div");
-            bars.style.width = `${160 * widthScale}px`;
-            bars.style.height = `${50 * heightScale}px`;
+            bars.style.width = `${160}px`;
+            bars.style.height = `${50}px`;
             bars.style.position = "absolute";
 
             if (this.usesWoundsVigor) {
@@ -144,7 +141,7 @@ export function playerPortraitPanel(ARGON) {
                 woundsLabel.style.width = "70%";
                 woundsLabel.style.height = "100%";
                 woundsLabel.style.textAlign = "left";
-                woundsLabel.style.fontSize = `${fontsize * (woundsHeightPart / (1 - woundsHeightPart)) * minScale}em`;
+                woundsLabel.style.fontSize = `${fontsize * (woundsHeightPart / (1 - woundsHeightPart))}em`;
                 woundsLabel.style.color = "white";
                 woundsLabel.style.textShadow = "grey 1px 1px 10px";
                 if (wounds?.max) {
@@ -215,7 +212,7 @@ export function playerPortraitPanel(ARGON) {
             hpLabel.style.width = "70%";
             hpLabel.style.height = "100%";
             hpLabel.style.textAlign = "left";
-            hpLabel.style.fontSize = `${fontsize * tempHeightPart * minScale}em`;
+            hpLabel.style.fontSize = `${fontsize * tempHeightPart}em`;
             hpLabel.style.color = "white";
             hpLabel.style.textShadow = "grey 1px 1px 10px";
             if (hp?.max) {

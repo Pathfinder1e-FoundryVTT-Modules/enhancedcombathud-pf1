@@ -1,4 +1,4 @@
-import {ucFirst, useAction} from "../../util.mjs";
+import {createBuff, ucFirst, useAction} from "../../util.mjs";
 import {ModuleName} from "../../ech-pf1.mjs";
 
 export function specialActionButton(ARGON) {
@@ -65,7 +65,7 @@ export function specialActionButton(ARGON) {
                     return `modules/${ModuleName}/icons/backstab.svg`;
                 case "totalDefense":
                     return `modules/${ModuleName}/icons/shield.svg`;
-                case "fightDefensively":
+                case "fightingDefensively":
                     return `modules/${ModuleName}/icons/shield-bash.svg`;
                 case "dropItem":
                 case "dropWeapon":
@@ -94,6 +94,29 @@ export function specialActionButton(ARGON) {
                 case "sunder":
                 case "trip":
                     await this.actor.rollCMB();
+                    break;
+
+                case "dropProne":
+                    await this.actor.update({
+                        "system.attributes.conditions.pf1_prone": true
+                    });
+                    break;
+
+                case "standUp":
+                    await this.actor.update({
+                        "system.attributes.conditions.-=pf1_prone": null
+                    });
+                    break;
+
+                case "totalDefense":
+                case "fightingDefensively":
+                    let buff = await this.actor.getItemByTag(this.type);
+                    if(!buff) {
+                        buff = await createBuff(this.actor, this.type);
+                    }
+                    await buff?.update({
+                        "system.active": true
+                    });
                     break;
             }
 

@@ -1,5 +1,31 @@
 {
   "ECHPF1": {
+    "Settings": {
+      "ShowActionPanelStandard": {
+        "name": "Show Standard Action Panel",
+        "desc": "Show the Standard Action panel in the Actions tab."
+      },
+      "ShowActionPanelMove": {
+        "name": "Show Move Action Panel",
+        "desc": "Show the Move Action panel in the Actions tab."
+      },
+      "ShowActionPanelSwift": {
+        "name": "Show Swift Action Panel",
+        "desc": "Show the Swift Action panel in the Actions tab."
+      },
+      "ShowActionPanelFull": {
+        "name": "Show Full Round Action Panel",
+        "desc": "Show the Full Round Action panel in the Actions tab."
+      },
+      "ShowActionPanelFree": {
+        "name": "Show Free Action Panel",
+        "desc": "Show the Free Action panel in the Actions tab."
+      },
+      "ShowMacroPanel": {
+        "name": "Show Macro Panel",
+        "desc": "Show the Macro panel in the Actions tab."
+      }
+    },
     "MR": "MR",
     "Abbr": {
       "ACFlatFooted": "FF AC",
@@ -25,14 +51,15 @@
       "Withdraw": "Withdraw",
       "AidAnother": "Aid Another",
       "CoupDeGrace": "Coup de Grace",
-      "FightDefensively": "Fight Defensively",
+      "FightingDefensively": "Fight Defensively",
       "DropItem": "Drop Item",
       "StandUp": "Stand Up",
       "DropProne": "Drop Prone",
       "DrawSheathe": "Draw/Sheathe Weapon",
       "AidAnotherAttack": "Aid Another (Attack)",
       "AidAnotherDefense": "Aid Another (Defense)",
-      "Charge": "Charge"
+      "Charge": "Charge",
+      "None": ""
     },
     "ActionTypes": {
       "Full": "Full Round",
@@ -46,7 +73,8 @@
     "ItemTypes": {
       "Spell": "Spell",
       "Feat": "Feature",
-      "Consumable": "Consumable"
+      "Consumable": "Consumable",
+      "Equipment": "Equipment"
     },
     "SpellLevels": {
       "0": "Cantrip/Orison",
@@ -59,6 +87,20 @@
       "7": "7th Level",
       "8": "8th Level",
       "9": "9th Level"
+    },
+    "Buffs": {
+      "Names": {
+        "FightingDefensively": "Fighting Defensively",
+        "TotalDefense": "Total Defense"
+      },
+      "Descriptions": {
+        "TotalDefense": "<p>You can defend yourself as a standard action. You get a +4 dodge bonus to your AC for 1 round. Your AC improves at the start of this action. You can&rsquo;t combine total defense with fighting defensively or with the benefit of the Combat Expertise feat. You can&rsquo;t make attacks of opportunity while using total defense.</p>",
+        "FightingDefensively": "<p>You can choose to fight defensively when attacking. If you do so, you take a &ndash;4 penalty on all attacks in a round to gain a +2 dodge bonus to AC for 1 round.</p>"
+      },
+      "ContextNotes": {
+        "TotalDefense1": "Total Defense cannot be combined with Combat Expertise.",
+        "TotalDefense2": "Cannot make AoO due to Total Defense."
+      }
     }
   }
 }

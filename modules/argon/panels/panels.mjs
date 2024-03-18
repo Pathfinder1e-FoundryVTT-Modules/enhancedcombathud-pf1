@@ -1,4 +1,4 @@
-import {BaseModuleName} from "../../ech-pf1.mjs";
+import {BaseModuleName, ModuleName} from "../../ech-pf1.mjs";
 import {ucFirst} from "../../util.mjs";
 import {
     buttonPanelActionButton,
@@ -16,8 +16,21 @@ export function panels(ARGON) {
         swiftActionPanel(ARGON),
         fullActionPanel(ARGON),
         freeActionPanel(ARGON),
-        ARGON.PREFAB.PassTurnPanel
-    ];
+        ARGON.PREFAB.PassTurnPanel,
+        ARGON.PREFAB.MacroPanel
+    ].filter(panel => {
+        switch(panel.name) {
+            case "PassTurnPanel":
+                break;
+
+            default:
+                if (!game.settings.get(ModuleName, `Show${panel.name}`)) {
+                    return false;
+                }
+        }
+
+        return true;
+    });
 }
 
 function actionPanel(ARGON) {
@@ -86,9 +99,8 @@ function standardActionPanel(ARGON) {
             const SplitButton = splitButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
 
-            for (let weapon of await this.equippedWeapons) {
-                buttons.push(new ItemButton({item: weapon, parent: this}));
-            }
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
 
             buttons.push(new SplitButton(
                 new ButtonPanelActionButton({parent: this, type: "maneuver"}),
@@ -103,6 +115,7 @@ function standardActionPanel(ARGON) {
             ))
 
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
 
             return buttons.filter(button => button.isValid);
@@ -137,6 +150,7 @@ function movementActionPanel(ARGON) {
 
             buttons.push(new SpellButtonPanelActionButton({parent: this}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
 
             return buttons.filter(button => button.isValid);
@@ -162,6 +176,7 @@ function swiftActionPanel(ARGON) {
 
             buttons.push(new SpellButtonPanelActionButton({parent: this}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
 
             return buttons.filter(button => button.isValid);
@@ -188,9 +203,8 @@ function fullActionPanel(ARGON) {
             const ItemButton = itemButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
 
-            for (let weapon of await this.equippedWeapons) {
-                buttons.push(new ItemButton({item: weapon, parent: this}));
-            }
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
 
             buttons.push(new SpellButtonPanelActionButton({parent: this}));
 
@@ -200,7 +214,8 @@ function fullActionPanel(ARGON) {
             ))
 
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
-            buttons.push(new ButtonPanelItemButton({parent: this, type: "item"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
 
             return buttons.filter(button => button.isValid);
         }
@@ -237,7 +252,7 @@ function freeActionPanel(ARGON) {
             buttons.push(new ButtonPanelItemButton({parent: this, type: "spell"}));
 
             buttons.push(new SplitButton(
-                new SpecialActionButton({parent: this, type: "fightDefensively"}),
+                new SpecialActionButton({parent: this, type: "fightingDefensively"}),
                 new SpecialActionButton({parent: this, type: "dropItem"}),
             ))
             buttons.push(new SplitButton(
@@ -246,7 +261,8 @@ function freeActionPanel(ARGON) {
             ))
 
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
-            buttons.push(new ButtonPanelItemButton({parent: this, type: "item"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
 
             return buttons.filter(button => button.isValid);
         }

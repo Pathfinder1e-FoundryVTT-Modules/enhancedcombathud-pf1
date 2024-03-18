@@ -17,20 +17,28 @@ export function itemButton(ARGON) {
             }
         }
 
-        isValid() {
+        get isValid() {
+            if(!this.item) {
+                return true;
+            }
+
+            if(["weapon", "equipment"].includes(this.item.type)) {
+                if (!this.item.system.equipped) return false;
+            }
+
             return true;
         }
 
         get quantity() {
-            if (this.item.type === "spell") {
-                if(this.item.system.level === 0) return null;
+            if (this.item?.type === "spell") {
+                if (this.item.system.level === 0) return null;
 
-                if(this.item.useSpellPoints()) return this.item.getSpellPointCost();
+                if (this.item.useSpellPoints()) return this.item.getSpellPointCost();
 
-                if(this.item.spellbook.spellPreparationMode === "spontaneous") return null;
+                if (this.item.spellbook.spellPreparationMode === "spontaneous") return null;
             }
 
-            if (this.item.isCharged) {
+            if (this.item?.isCharged) {
                 let chargeCost = this.item.getDefaultChargeCost() || 1;
 
                 return Math.floor(this.item.charges / chargeCost);
@@ -40,6 +48,10 @@ export function itemButton(ARGON) {
         async _onLeftClick(event) {
             await this.item.use();
             useAction(this.actionType);
+
+            if(this.parent.isAccordionPanelCategory) {
+                this.parent.use();
+            }
         }
     }
 }
