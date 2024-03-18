@@ -32,6 +32,10 @@ export function movementHud(ARGON) {
             }
         }
 
+        get visible() {
+            return game.combat?.started;
+        }
+
         _onNewRound(combat) {
             super._onNewRound(combat);
             this.triggerCount = 0;
