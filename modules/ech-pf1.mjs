@@ -5,7 +5,6 @@ import {movementHud} from "./argon/movementHud.mjs";
 import {buttonHud} from "./argon/buttonHud.mjs";
 import {registerSettings} from "./settings.mjs";
 import {panels} from "./argon/panels/panels.mjs";
-import {spellPointTemplates} from "../../pf1e-spell-points/modules/pf1e-spellPoints-main.mjs";
 
 export const BaseModuleName = "enhancedcombathud";
 export const ModuleName = "enhancedcombathud-pf1";

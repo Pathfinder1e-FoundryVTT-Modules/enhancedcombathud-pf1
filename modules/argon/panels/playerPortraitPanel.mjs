@@ -1,4 +1,4 @@
-import {ModuleName, templates} from "../../ech-pf1.mjs";
+import {templates} from "../../ech-pf1.mjs";
 import {ucFirst} from "../../util.mjs";
 
 export function playerPortraitPanel(ARGON) {
