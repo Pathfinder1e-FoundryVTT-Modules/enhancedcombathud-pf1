@@ -25,6 +25,22 @@ export function specialActionButton(ARGON) {
             return true;
         }
 
+        hasTooltip() {
+            return true;
+        }
+
+        async getTooltipData() {
+            return {
+                title: this.label,
+                description: await TextEditor.enrichHTML(game.i18n.localize(`ECHPF1.ActionDescriptions.${ucFirst(this.type)}`)),
+                subtitle: null,
+                details: null,
+                properties: null,
+                propertiesLabel: null,
+                footerText: null
+            }
+        }
+
         get icon() {
             if (this.replacementItem?.img) {
                 return this.replacementItem.img;
