@@ -245,7 +245,7 @@ export function itemButton(ARGON) {
             if (this.item?.type === "spell") {
                 if (this.item.system.level === 0) return null;
 
-                if (this.item.useSpellPoints()) return this.item.getSpellPointCost() || this.item.spellLevel;
+                if (this.item.useSpellPoints()) return (typeof this.item.getSpellPointCost == 'function' ? this.item.getSpellPointCost() : this.item.spellLevel);
 
                 if (this.item.spellbook.spellPreparationMode === "spontaneous") return null;
             }
