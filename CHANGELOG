@@ -1,6 +1,7 @@
 ## v0.9.2
 - Simply spell selection if only one spellbook is active
 - Fix spell points support
+- Fix total spell slots showing for prepared casters
 
 ## v0.9.1
 - Fix dev clutter

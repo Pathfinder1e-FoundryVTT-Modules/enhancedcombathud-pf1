@@ -218,7 +218,7 @@ export function spellbookButtonPanelActionButton(ARGON) {
         get categories() {
             const spells = this.validItems.filter(item => item.system.spellbook === this.spellbookId);
             const spellLevels = unique(spells.map(item => item.system.level)).sort();
-            const hasSpellUses = !this.spellbook.spellPoints.useSystem && this.spellbook.prepMode !== "spontaneous";
+            const hasSpellUses = !this.spellbook.spellPoints.useSystem && this.spellbook.spellPreparationMode === "spontaneous";
 
             let spellCategories = [];
             for (let level of spellLevels) {
@@ -227,8 +227,8 @@ export function spellbookButtonPanelActionButton(ARGON) {
                 spellCategories.push({
                     label: game.i18n.localize(`ECHPF1.SpellLevels.${level}`),
                     uses: {
-                        max: level && hasSpellUses ? spellLevelInfo.max : null,
-                        value: level && hasSpellUses ? spellLevelInfo.value : null
+                        max: (level && hasSpellUses) ? spellLevelInfo.max : null,
+                        value: (level && hasSpellUses) ? spellLevelInfo.value : null
                     },
                     buttons: spells.filter(item => item.system.level === level)
                 });
