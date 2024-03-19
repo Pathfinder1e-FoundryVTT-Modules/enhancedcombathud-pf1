@@ -1,5 +1,15 @@
 {
   "ECHPF1": {
+    "ACNormal": "Rüstungsklasse",
+    "ACFlatFooted": "Auf dem falschen Fuß-Rüstungsklasse",
+    "ACTouch": "Berührungs-Rüstungsklasse",
+    "CMDTotal": "Kampfmanöververteidigung",
+    "CMDFlatFootedTotal": "Auf dem falschen Fuß-Kampfmanöververteidigung",
+    "TemporaryHP": "Temporäre Trefferpunkte",
+    "HP": "Trefferpunkte",
+    "HPShort": "TP",
+    "Nonlethal": "Nichttödlicher Schaden",
+    "TemporaryVigor": "Temporäre Vitalität",
     "CombatManeuver": "Kampfmanöver",
     "Settings": {
       "ShowActionPanelStandard": {

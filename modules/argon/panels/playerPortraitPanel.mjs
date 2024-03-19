@@ -80,6 +80,7 @@ export function playerPortraitPanel(ARGON) {
                     for (const key of ["normal", "touch", "flatFooted"]) {
                         blocks["right"].push({
                             label: game.i18n.localize(`ECHPF1.Abbr.AC${ucFirst(key)}`),
+                            tooltip: game.i18n.localize(`ECHPF1.AC${ucFirst(key)}`),
                             id: key,
                             hidden: key !== "normal",
                             value: this.actor.system.attributes.ac[key]?.total
@@ -89,6 +90,7 @@ export function playerPortraitPanel(ARGON) {
                     for (const key of ["total", "flatFootedTotal"]) {
                         blocks["right"].push({
                             label: game.i18n.localize(`ECHPF1.Abbr.CMD${ucFirst(key)}`),
+                            tooltip: game.i18n.localize(`ECHPF1.CMD${ucFirst(key)}`),
                             id: key,
                             hidden: key !== "total",
                             value: this.actor.system.attributes.cmd[key]
@@ -101,6 +103,7 @@ export function playerPortraitPanel(ARGON) {
                             blocks["left"].push({
                                 label: game.i18n.localize("PF1.Temporary"),
                                 id: "vigor-temp",
+                                tooltip: game.i18n.localize("ECHPF1.TemporaryVigor"),
                                 value: this.actor.system.attributes.vigor.temp
                             });
                         }
@@ -122,20 +125,29 @@ export function playerPortraitPanel(ARGON) {
                             blocks["left"].push({
                                 label: game.i18n.localize("PF1.Temporary"),
                                 id: "hp-temp",
+                                tooltip: game.i18n.localize("ECHPF1.TemporaryHP"),
                                 value: this.actor.system.attributes.hp.temp
                             });
                         }
                         blocks["left"].push({
-                           label: game.i18n.localize("PF1.HP"),
+                           label: game.i18n.localize("ECHPF1.HPShort"),
                             id: "hp",
+                            tooltip: game.i18n.localize("ECHPF1.HP"),
                             color: this._getColor(this.actor.system.attributes.hp.value, this.actor.system.attributes.hp.max),
                             value: `${this.actor.system.attributes.hp.value}`
                         });
+                        if(this.actor.system.attributes.hp.nonlethal) {
+                            blocks["left"].push({
+                                label: game.i18n.localize("PF1.Nonlethal"),
+                                id: "nonlethal",
+                                color: "#ff6464",
+                                tooltip: game.i18n.localize("ECHPF1.Nonlethal"),
+                                value: this.actor.system.attributes.hp.nonlethal
+                            });
+                        }
                     }
 
                     break;
-
-
             }
 
             return blocks;

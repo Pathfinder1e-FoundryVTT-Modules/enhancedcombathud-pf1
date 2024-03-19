@@ -1,6 +1,16 @@
 {
   "ECHPF1": {
+    "ACNormal": "Armor Class",
+    "ACFlatFooted": "Flat-Footed Armor Class",
+    "ACTouch": "Touch Armor Class",
+    "CMDTotal": "Combat Maneuver Defense",
+    "CMDFlatFootedTotal": "Flat-Footed Combat Maneuver Defense",
     "CombatManeuver": "Combat Maneuver",
+    "TemporaryHP": "Temporary Hit Points",
+    "HP": "Hit Points",
+    "HPShort": "HP",
+    "Nonlethal": "Nonlethal Damage",
+    "TemporaryVigor": "Temporary Vigor",
     "Settings": {
       "ShowActionPanelStandard": {
         "name": "Show Standard Action Panel",
