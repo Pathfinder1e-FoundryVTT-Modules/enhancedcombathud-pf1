@@ -2,7 +2,7 @@ import {BaseModuleName, ModuleName} from "../../ech-pf1.mjs";
 import {ucFirst} from "../../util.mjs";
 import {
     buttonPanelActionButton,
-    buttonPanelItemButton,
+    buttonPanelItemButton, spellbookButtonPanelActionButton,
     spellButtonPanelActionButton
 } from "../buttons/buttonPanelButton.mjs";
 import {splitButton} from "../buttons/splitButton.mjs";
@@ -19,7 +19,7 @@ export function panels(ARGON) {
         ARGON.PREFAB.PassTurnPanel,
         ARGON.PREFAB.MacroPanel
     ].filter(panel => {
-        switch(panel.name) {
+        switch (panel.name) {
             case "PassTurnPanel":
                 break;
 
@@ -53,6 +53,10 @@ function actionPanel(ARGON) {
 
         get actionType() {
             return "none";
+        }
+
+        get hasMultipleSpellbooks() {
+            return this.actor.system.attributes.spells.usedSpellbooks.length > 1;
         }
 
         _onNewRound(combat) {
@@ -98,6 +102,7 @@ function standardActionPanel(ARGON) {
             const ItemButton = itemButton(ARGON);
             const SplitButton = splitButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
 
             buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
             buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
@@ -107,7 +112,12 @@ function standardActionPanel(ARGON) {
                 new SpecialActionButton({parent: this, type: "feint"})
             ))
 
-            buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            console.log(this.actor);
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+            }
 
             buttons.push(new SplitButton(
                 new SpecialActionButton({parent: this, type: "totalDefense"}),
@@ -141,8 +151,6 @@ function movementActionPanel(ARGON) {
             const SpecialActionButton = specialActionButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
 
-            // Draw/Sheathe Weapon
-            // Stand Up
             buttons.push(new SplitButton(
                 new SpecialActionButton({parent: this, type: "drawSheathe"}),
                 new SpecialActionButton({parent: this, type: "standUp"}),
@@ -173,8 +181,15 @@ function swiftActionPanel(ARGON) {
 
             const ButtonPanelItemButton = buttonPanelItemButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
 
-            buttons.push(new SpellButtonPanelActionButton({parent: this}));
+
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+            }
+
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
             buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
@@ -202,13 +217,18 @@ function fullActionPanel(ARGON) {
             const SplitButton = splitButton(ARGON);
             const ItemButton = itemButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
 
-            if(game.settings.get(ModuleName, `ShowWeaponsInFullPanel`)) {
+            if (game.settings.get(ModuleName, `ShowWeaponsInFullPanel`)) {
                 buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
                 buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
             }
 
-            buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+            }
 
             buttons.push(new SplitButton(
                 new SpecialActionButton({parent: this, type: "coupDeGrace"}),
@@ -248,10 +268,13 @@ function freeActionPanel(ARGON) {
             const ButtonPanelItemButton = buttonPanelItemButton(ARGON);
             const SpecialActionButton = specialActionButton(ARGON);
             const SplitButton = splitButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
 
-            // Fight Defensively
-
-            buttons.push(new ButtonPanelItemButton({parent: this, type: "spell"}));
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+            }
 
             buttons.push(new SplitButton(
                 new SpecialActionButton({parent: this, type: "fightingDefensively"}),

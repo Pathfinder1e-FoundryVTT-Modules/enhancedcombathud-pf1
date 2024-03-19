@@ -176,11 +176,11 @@ export function buttonPanelItemButton(ARGON) {
     }
 }
 
-function spellbookButtonPanelActionButton(ARGON) {
+export function spellbookButtonPanelActionButton(ARGON) {
     return class Pathfinder1eButtonPanelButton extends ARGON.MAIN.BUTTONS.ButtonPanelButton {
         constructor({parent, type, color, item, spellbookId}) {
             super();
-            this.type = type;
+            this.type = "spell";
             this._parent = parent;
 
             this.replacementItem = item;
@@ -355,10 +355,10 @@ export function spellButtonPanelActionButton(ARGON) {
 
             return new ButtonPanel({
                 buttons: [
-                    new SpellbookButtonPanelItemButton({parent: this, type: "spell", spellbookId: "primary"}),
-                    new SpellbookButtonPanelItemButton({parent: this, type: "spell", spellbookId: "secondary"}),
-                    new SpellbookButtonPanelItemButton({parent: this, type: "spell", spellbookId: "tertiary"}),
-                    new SpellbookButtonPanelItemButton({parent: this, type: "spell", spellbookId: "spelllike"}),
+                    new SpellbookButtonPanelItemButton({parent: this, spellbookId: "primary"}),
+                    new SpellbookButtonPanelItemButton({parent: this, spellbookId: "secondary"}),
+                    new SpellbookButtonPanelItemButton({parent: this, spellbookId: "tertiary"}),
+                    new SpellbookButtonPanelItemButton({parent: this, spellbookId: "spelllike"}),
                 ].filter(button => button.isValid)
             });
         }
