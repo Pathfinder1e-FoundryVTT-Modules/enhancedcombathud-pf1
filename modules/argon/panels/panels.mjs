@@ -268,6 +268,7 @@ function freeActionPanel(ARGON) {
             const ButtonPanelItemButton = buttonPanelItemButton(ARGON);
             const SpecialActionButton = specialActionButton(ARGON);
             const SplitButton = splitButton(ARGON);
+            const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
             const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
 
             if (this.hasMultipleSpellbooks) {
