@@ -1,3 +1,5 @@
+import {simplifyFormula} from "../../../systems/foundryvtt-pathfinder1-master/module/utils/lib.mjs";
+
 export function ucFirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -224,4 +226,107 @@ export function convertDistance(value, type = "ft") {
         default:
             return [value, type];
     }
+}
+
+export function renderAttackString(action) {
+    return action.item.attackArray.map((attack) => {
+        const value = Math.floor(attack)
+        return (value < 0 ? "-" : "+") + value
+    }).join('/');
+}
+
+export function renderCriticalChanceString(action) {
+    const critRange = action.data.ability.critRange;
+
+    return (critRange === 20 ? "20" : `${critRange}-20`) + 'x' + (action.data.ability.critMult || `2`)
+}
+
+export function renderDamageString(action, rollData, options) {
+    if (!action.hasDamage) return null;
+
+    const actor = action.actor,
+        item = action.item,
+        actorData = actor?.system,
+        actionData = action.data,
+        combine = options.hash?.combine ?? true;
+
+    const parts = [];
+
+    const handleFormula = (formula, change) => {
+        try {
+            switch (typeof formula) {
+                case "string": {
+                    // Ensure @item.level and similar gets parsed correctly
+                    const rd = formula.indexOf("@") >= 0 ? change?.parent?.getRollData() ?? rollData : {};
+                    const newformula = simplifyFormula(formula, rd, {combine});
+                    if (newformula != 0) parts.push(newformula);
+                    break;
+                }
+                case "number":
+                    if (formula != 0) parts.push(`${formula}`);
+                    break;
+            }
+        } catch (err) {
+            console.error(`Formula parsing error with "${formula}"`);
+            parts.push("NaN");
+        }
+    };
+
+    const handleParts = (parts) => parts.forEach(({formula}) => handleFormula(formula));
+
+    // Normal damage parts
+    handleParts(actionData.damage.parts);
+
+    // Include ability score only if the string isn't too long yet
+    const dmgAbl = actionData.ability.damage;
+    const dmgAblMod = Math.floor((actorData?.abilities[dmgAbl]?.mod ?? 0) * (actionData.ability.damageMult || 1));
+    if (dmgAblMod != 0) parts.push(dmgAblMod);
+
+    // Include damage parts that don't happen on crits
+    handleParts(actionData.damage.nonCritParts);
+
+    // Include general sources. Item enhancement bonus is among these.
+    action.allDamageSources.forEach((s) => {
+        if (s.operator === "script") return;
+        handleFormula(s.formula, s);
+    });
+
+    if (parts.length === 0) parts.push("NaN"); // Something probably went wrong
+
+    const simplifyMath = (formula) =>
+        formula
+            .replace(/\s+/g, "") // remove whitespaces
+            .replace(/\+-/g, "-") // + -n = -n
+            .replace(/--/g, "+") // - -n = +n
+            .replace(/-\+/g, "-") // - +n = -n
+            .replace(/\+\++/g, "+"); // + +n = +n
+
+    const semiFinal = simplifyMath(parts.join("+"));
+    if (semiFinal === "NaN") return semiFinal;
+    if (!combine) return semiFinal;
+    // With combine enabled, the following turns 1d12+1d8+6-8+3-2 into 1d12+1d8-1
+    const final = simplifyFormula(semiFinal, null, {combine});
+    return simplifyMath(final);
+}
+
+export async function renderSaveString(action, rollData) {
+    const saveType = game.i18n.localize(`PF1.SavingThrow${ucFirst(action.data.save.type)}`);
+
+    let saveDC = action.data.save.dc;
+    if(action.item.type === "spell") {
+       saveDC += action.item.spellbook.baseDCFormula;
+    }
+
+    saveDC = (await RollPF.safeRoll(saveDC, rollData)).total;
+
+    const threshold = game.i18n.localize("PF1.DCThreshold").replace('{threshold}', saveDC);
+
+    return `${saveType} ${threshold}`;
+}
+
+export function renderTemplateString(action) {
+
+    const targetType = game.i18n.localize(`PF1.MeasureTemplate${ucFirst(action.data.measureTemplate.type)}`);
+    const distance = convertDistance(action.data.measureTemplate.size);
+    return `${targetType} ${distance[0]} ${distance[1]}`;
 }

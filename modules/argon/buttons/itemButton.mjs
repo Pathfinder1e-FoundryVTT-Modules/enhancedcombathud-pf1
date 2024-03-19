@@ -1,4 +1,12 @@
-import {abilityTypes, convertDistance, spellSchools, ucFirst, useAction, weaponProperties} from "../../util.mjs";
+import {
+    abilityTypes,
+    convertDistance, renderAttackString, renderCriticalChanceString,
+    renderDamageString, renderSaveString, renderTemplateString,
+    spellSchools,
+    ucFirst,
+    useAction,
+    weaponProperties
+} from "../../util.mjs";
 
 
 export function itemButton(ARGON) {
@@ -40,6 +48,8 @@ export function itemButton(ARGON) {
                 return null;
             }
 
+            const rollData = await this.actor.getRollData();
+
             const identified = item.system.identified !== undefined ? item.system.identified : true;
 
             const title = identified ? item.name : (item.system.unidentified.name || game.i18n.localize("PF1.Unidentified"))
@@ -66,7 +76,7 @@ export function itemButton(ARGON) {
                             }
                         })
 
-                    if(item.system.subschool) {
+                    if (item.system.subschool) {
                         details.push({
                             label: game.i18n.localize("PF1.SubSchool"),
                             value: ucFirst(item.system.subschool)
@@ -80,6 +90,13 @@ export function itemButton(ARGON) {
                             .map(comp => game.i18n.localize(`PF1.SpellComponentKeys.${ucFirst(comp[0])}`))
                             .join(", ")
                     })
+
+                    if(item.firstAction.data.spellEffect) {
+                        details.push({
+                            label: game.i18n.localize("PF1.SpellEffect"),
+                            value: item.firstAction.data.spellEffect
+                        })
+                    }
 
                     break;
 
@@ -112,13 +129,62 @@ export function itemButton(ARGON) {
                         subtitle = item.system.subType ? game.i18n.localize(`PF1.EquipType${ucFirst(item.system.subType)}`) : null;
                     }
 
+                    if(item.system.armor.value) {
+                        details.push({
+                            label: game.i18n.localize("PF1.ACNormal"),
+                            value: ('+' + item.system.armor.value).replace('+-', '-')
+                        })
+                        details.push({
+                            label: game.i18n.localize("PF1.MaxDexShort"),
+                            value: item.system.armor.dex || '-'
+                        })
+                        details.push({
+                            label: game.i18n.localize("PF1.ACP"),
+                            value: '-' + item.system.armor.acp
+                        })
+                    }
+
+                    console.log(item)
+
                     break;
             }
 
             const action = item.firstAction;
-            console.log(action);
             if (action) {
-                if(action.maxRange) {
+                if (action.hasAttack) {
+                    details.push({
+                        label: game.i18n.localize("PF1.AttackRollBonus"),
+                        value: renderAttackString(action)
+                    })
+
+                    details.push({
+                        label: game.i18n.localize("PF1.CriticalThreatRange"),
+                        value: renderCriticalChanceString(action)
+                    })
+
+                    if (action.data.touch) {
+                        details.push({
+                            label: game.i18n.localize("PF1.TouchAttack"),
+                            value: game.i18n.localize("PF1.Yes")
+                        })
+                    }
+                }
+
+                if (action.hasDamage) {
+                    details.push({
+                        label: game.i18n.localize(action.isHealing ? "PF1.Healing" : "PF1.Damage"),
+                        value: renderDamageString(action, rollData, {combine: false})
+                    })
+                }
+
+                if (action.hasTemplate) {
+                    details.push({
+                        label: game.i18n.localize("PF1.MeasureTemplate"),
+                        value: renderTemplateString(action)
+                    })
+                }
+
+                if (action.maxRange && action.maxRange) {
                     const distanceValues = convertDistance(action.maxRange);
                     details.push({
                         label: game.i18n.localize("PF1.Range"),
@@ -126,7 +192,7 @@ export function itemButton(ARGON) {
                     })
                 }
 
-                if(action.minRange) {
+                if (action.minRange) {
                     const distanceValues = convertDistance(action.minRange);
                     details.push({
                         label: game.i18n.localize("PF1.MinRange"),
@@ -134,39 +200,34 @@ export function itemButton(ARGON) {
                     })
                 }
 
-                if(action.hasAttack) {
-                    // TODO: Calculate attack roll bonus
-                    // details.push({
-                    //     label: game.i18n.localize("PF1.AttackRollBonus"),
-                    //     value: action.data.attackBonus
-                    // })
+                if (action.data.target.value) {
+                    details.push({
+                        label: game.i18n.localize("PF1.Targets"),
+                        value: action.data.target.value
+                    })
                 }
 
-                if(action.hasDamage) {
-                    // TODO: Calculate damage string
-                    // details.push({
-                    //     label: game.i18n.localize(action.isHealing() ? "PF1.Healing" : "PF1.Damage"),
-                    //     value: action.data.damage.parts.
-                    // })
-
-                    if(action.hasAttack) {
-                        // TODO: Add critical multiplier
-                    }
-
-                    // TODO: Touch attack indicator
+                if(action.data.duration.value) {
+                    details.push({
+                        label: game.i18n.localize("PF1.Duration"),
+                        value: action.data.duration.value
+                    })
                 }
 
-                if(action.hasTemplate) {
-                    // TODO: Calculate template string
+                if (action.hasSave) {
+                    details.push({
+                        label: game.i18n.localize("PF1.Save"),
+                        value: await renderSaveString(action, rollData)
+                    })
                 }
+            }
 
-                if(action.hasSave) {
-                    // TODO: Calculate save string
-                }
+            if(item.system.sr) {
+                details.push({
+                    label: game.i18n.localize("PF1.SpellResistance"),
+                    value: game.i18n.localize("PF1.Yes")
 
-                // TODO: Duration
-
-                // TODO: Target(s)
+                })
             }
 
             return {
