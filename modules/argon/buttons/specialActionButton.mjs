@@ -30,10 +30,26 @@ export function specialActionButton(ARGON) {
         }
 
         async getTooltipData() {
+            let subtitle = null;
+            switch(this.type) {
+                case "bullRush":
+                case "dirtyTrick":
+                case "disarm":
+                case "drag":
+                case "overrun":
+                case "steal":
+                case "grapple":
+                case "reposition":
+                case "sunder":
+                case "trip":
+                    subtitle = game.i18n.localize("ECHPF1.CombatManeuver");
+                    break;
+            }
+
             return {
                 title: this.label,
                 description: await TextEditor.enrichHTML(game.i18n.localize(`ECHPF1.ActionDescriptions.${ucFirst(this.type)}`)),
-                subtitle: null,
+                subtitle,
                 details: null,
                 properties: null,
                 propertiesLabel: null,

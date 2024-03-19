@@ -24,7 +24,7 @@ export function panels(ARGON) {
                 break;
 
             default:
-                if (!game.settings.get(ModuleName, `Show${panel.name}`)) {
+                if (!game.settings.get(ModuleName, `Show${panel.name.replace("Pathfinder1e", "")}`)) {
                     return false;
                 }
         }
@@ -203,8 +203,10 @@ function fullActionPanel(ARGON) {
             const ItemButton = itemButton(ARGON);
             const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
 
-            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
-            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
+            if(game.settings.get(ModuleName, `ShowWeaponsInFullPanel`)) {
+                buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
+                buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
+            }
 
             buttons.push(new SpellButtonPanelActionButton({parent: this}));
 

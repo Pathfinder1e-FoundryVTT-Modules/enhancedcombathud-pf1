@@ -1,5 +1,6 @@
 {
   "ECHPF1": {
+    "CombatManeuver": "Combat Maneuver",
     "Settings": {
       "ShowActionPanelStandard": {
         "name": "Show Standard Action Panel",
@@ -24,6 +25,10 @@
       "ShowMacroPanel": {
         "name": "Show Macro Panel",
         "desc": "Show the Macro panel in the Actions tab."
+      },
+      "ShowWeaponsInFullPanel": {
+        "name": "Show Weapons in Full Panel",
+        "desc": "When active, weapon attacks are also listed in the full action panel."
       }
     },
     "MR": "MR",

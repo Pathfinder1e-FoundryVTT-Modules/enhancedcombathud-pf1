@@ -20,6 +20,37 @@
     min-height: 150px;
 }
 
-.extended-combat-hud .action-hud .features-container .feature-element {
-    background-color: black;
+.extended-combat-hud .portrait-stat-block.stacked-stats {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+
+.extended-combat-hud .portrait-stat-block.stacked-stats > .portrait-stat {
+    height: 2rem;
+    transition: height 500ms, font-size 500ms;
+    padding: 0.35rem;
+    width: 100%;
+    display: flex;
+}
+
+.extended-combat-hud .portrait-stat-block.stacked-stats > .portrait-stat.hidden {
+    display: none;
+}
+
+.extended-combat-hud .portrait-hud:hover .portrait-stat-block.stacked-stats > .portrait-stat.hidden {
+    display: flex;
+}
+
+.extended-combat-hud .portrait-stat-block.stacked-stats.left {
+    left: 0;
+}
+
+.extended-combat-hud .portrait-stat-block.stacked-stats.right {
+    right: 0;
+}
+
+.extended-combat-hud .portrait-stat-block.stacked-stats > .portrait-stat > .label {
+    flex-grow: 1;
+    margin-right: 0.5rem;
 }

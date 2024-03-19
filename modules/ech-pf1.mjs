@@ -5,6 +5,7 @@ import {movementHud} from "./argon/movementHud.mjs";
 import {buttonHud} from "./argon/buttonHud.mjs";
 import {registerSettings} from "./settings.mjs";
 import {panels} from "./argon/panels/panels.mjs";
+import {spellPointTemplates} from "../../pf1e-spell-points/modules/pf1e-spellPoints-main.mjs";
 
 export const BaseModuleName = "enhancedcombathud";
 export const ModuleName = "enhancedcombathud-pf1";
@@ -20,3 +21,10 @@ Hooks.on("argonInit", async (CoreHUD) => {
 })
 
 Hooks.once("init", registerSettings);
+
+export let templates = {
+    StatBlock: null
+};
+Hooks.once("init", () => {
+    getTemplate(`modules/${ModuleName}/templates/StatBlocks.hbs`,).then(t => templates.StatBlock = t)
+})

@@ -1,5 +1,6 @@
 {
   "ECHPF1": {
+    "CombatManeuver": "Kampfmanöver",
     "Settings": {
       "ShowActionPanelStandard": {
         "name": "Standardaktionen anzeigen",
@@ -24,6 +25,10 @@
       "ShowMacroPanel": {
         "name": "Makro-Panel anzeigen",
         "desc": "Zeigt das Makro-Panel an."
+      },
+      "ShowWeaponsInFullPanel": {
+        "name": "Waffen im Aktionspanel für Volle Runde anzeigen",
+        "desc": "Wenn diese Option aktiviert ist, werden Waffenangriffe ebenfalls im Aktionspanel für Volle Runden angezeigt."
       }
     },
     "MR": "LR",
