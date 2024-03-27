@@ -10,15 +10,29 @@ import {specialActionButton} from "../buttons/specialActionButton.mjs";
 import {itemButton} from "../buttons/itemButton.mjs";
 
 export function panels(ARGON) {
-    return [
-        standardActionPanel(ARGON),
-        movementActionPanel(ARGON),
-        swiftActionPanel(ARGON),
-        fullActionPanel(ARGON),
-        freeActionPanel(ARGON),
+    const isUnchainedActionEconomy = game.settings.get("pf1", "unchainedActionEconomy");
+
+    let panels = [];
+    if (isUnchainedActionEconomy) {
+        panels = [
+            unchainedActionPanel(ARGON),
+            reactionActionPanel(ARGON),
+            freeActionPanel(ARGON),
+        ]
+    } else {
+        panels = [
+            standardActionPanel(ARGON),
+            movementActionPanel(ARGON),
+            swiftActionPanel(ARGON),
+            fullActionPanel(ARGON),
+            freeActionPanel(ARGON),
+        ]
+    }
+
+    return panels.concat([
         ARGON.PREFAB.PassTurnPanel,
         ARGON.PREFAB.MacroPanel
-    ].filter(panel => {
+    ]).filter(panel => {
         switch (panel.name) {
             case "PassTurnPanel":
                 break;
@@ -53,6 +67,10 @@ function actionPanel(ARGON) {
 
         get actionType() {
             return "none";
+        }
+
+        get isUnchained() {
+            return false;
         }
 
         get hasMultipleSpellbooks() {
@@ -115,7 +133,10 @@ function standardActionPanel(ARGON) {
             if (this.hasMultipleSpellbooks) {
                 buttons.push(new SpellButtonPanelActionButton({parent: this}));
             } else {
-                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
             }
 
             buttons.push(new SplitButton(
@@ -186,7 +207,10 @@ function swiftActionPanel(ARGON) {
             if (this.hasMultipleSpellbooks) {
                 buttons.push(new SpellButtonPanelActionButton({parent: this}));
             } else {
-                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
             }
 
             buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
@@ -226,7 +250,10 @@ function fullActionPanel(ARGON) {
             if (this.hasMultipleSpellbooks) {
                 buttons.push(new SpellButtonPanelActionButton({parent: this}));
             } else {
-                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
             }
 
             buttons.push(new SplitButton(
@@ -273,7 +300,10 @@ function freeActionPanel(ARGON) {
             if (this.hasMultipleSpellbooks) {
                 buttons.push(new SpellButtonPanelActionButton({parent: this}));
             } else {
-                buttons.push(new SpellbookButtonPanelItemButton({parent: this, spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]}));
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
             }
 
             buttons.push(new SplitButton(
@@ -291,5 +321,122 @@ function freeActionPanel(ARGON) {
 
             return buttons.filter(button => button.isValid);
         }
+    }
+}
+
+function unchainedActionPanel(ARGON) {
+
+    return class Pathfinder1eUnchainedActionPanel extends actionPanel(ARGON) {
+        constructor() {
+            super();
+            this.actionsUsed = 0;
+        }
+
+        get maxActions() {
+            return 3;
+        }
+
+        get currentActions() {
+            return Math.max(0, 3 - this.actionsUsed);
+        }
+
+        _onNewRound(combat) {
+            this.actionsUsed = 0;
+            this.updateActionUse();
+        }
+
+        get actionType() {
+            return "action";
+        }
+
+        async _getButtons() {
+            let buttons = [];
+
+            const ButtonPanelItemButton = buttonPanelItemButton(ARGON);
+            const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
+            const ItemButton = itemButton(ARGON);
+            const ButtonPanelActionButton = buttonPanelActionButton(ARGON);
+            const SpecialActionButton = specialActionButton(ARGON);
+            const SplitButton = splitButton(ARGON);
+
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
+
+            buttons.push(new SplitButton(
+                new ButtonPanelActionButton({parent: this, type: "maneuver"}),
+                new SpecialActionButton({parent: this, type: "feint"})
+            ))
+
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
+            }
+
+            buttons.push(new SplitButton(
+                new SpecialActionButton({parent: this, type: "totalDefense"}),
+                new ButtonPanelActionButton({parent: this, type: "aidAnother"}),
+            ))
+
+            buttons.push(new SplitButton(
+                new SpecialActionButton({parent: this, type: "drawSheathe"}),
+                new SpecialActionButton({parent: this, type: "standUp"}),
+            ))
+
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
+
+            return buttons.filter(button => button.isValid);
+        }
+
+        get isUnchained() {
+            return true;
+        }
+    }
+}
+
+function reactionActionPanel(ARGON) {
+    return class Pathfinder1eReactionActionPanel extends actionPanel(ARGON) {
+
+        get actionType() {
+            return "reaction";
+        }
+
+        async _getButtons() {
+            let buttons = [];
+
+            const ButtonPanelItemButton = buttonPanelItemButton(ARGON);
+            const SpellButtonPanelActionButton = spellButtonPanelActionButton(ARGON);
+            const SpellbookButtonPanelItemButton = spellbookButtonPanelActionButton(ARGON);
+            const ItemButton = itemButton(ARGON);
+
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: true}));
+            buttons.push(new ItemButton({item: null, parent: this, isWeaponSet: true, isPrimary: false}));
+
+            if (this.hasMultipleSpellbooks) {
+                buttons.push(new SpellButtonPanelActionButton({parent: this}));
+            } else {
+                buttons.push(new SpellbookButtonPanelItemButton({
+                    parent: this,
+                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                }));
+            }
+
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "feat"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "equipment"}));
+            buttons.push(new ButtonPanelItemButton({parent: this, type: "consumable"}));
+
+            return buttons.filter(button => button.isValid);
+        }
+
+        get isUnchained() {
+            return true;
+        }
+
     }
 }

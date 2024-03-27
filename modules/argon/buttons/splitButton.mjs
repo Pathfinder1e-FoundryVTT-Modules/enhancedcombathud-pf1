@@ -11,5 +11,15 @@ export function splitButton(ARGON) {
         get colorScheme() {
             return this.parent.colorScheme;
         }
+
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
     }
 }

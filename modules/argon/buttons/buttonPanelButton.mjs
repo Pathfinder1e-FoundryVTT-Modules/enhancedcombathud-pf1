@@ -24,6 +24,16 @@ export function buttonPanelActionButton(ARGON) {
             this._parent = parent;
         }
 
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
+
         get actionType() {
             return this.parent.actionType;
         }
@@ -107,6 +117,10 @@ export function buttonPanelItemButton(ARGON) {
             return this.parent.actionType;
         }
 
+        get isUnchained() {
+            return this.parent.isUnchained;
+        }
+
         get label() {
             if (this.replacementItem) {
                 return this.replacementItem.name;
@@ -126,14 +140,21 @@ export function buttonPanelItemButton(ARGON) {
                     return false;
                 }
 
-                if(item.isCharged && !item.charges) {
+                if (item.isCharged && !item.charges) {
                     return false;
                 }
 
                 for (let action of item.actions) {
-                    if (action.data.activation.type === this.actionType
-                        && action.data.activation.cost === 1) {
-                        return true;
+                    if(this.isUnchained) {
+                        if (action.data.activation.unchained.type === this.actionType) {
+                            return true;
+                        }
+                    }
+                    else {
+                        if (action.data.activation.type === this.actionType
+                            && action.data.activation.cost === 1) {
+                            return true;
+                        }
                     }
                 }
 

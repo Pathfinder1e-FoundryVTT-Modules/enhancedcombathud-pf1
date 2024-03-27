@@ -70,4 +70,24 @@ export function registerSettings() {
         default: false,
         requiresReload : true
     });
+
+    game.settings.register(ModuleName, "ShowUnchainedActionPanel", {
+        name: game.i18n.localize(`ECHPF1.Settings.ShowUnchainedActionPanel.name`),
+        hint: game.i18n.localize(`ECHPF1.Settings.ShowUnchainedActionPanel.desc`),
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+        requiresReload : true
+    });
+
+    game.settings.register(ModuleName, "ShowReactionActionPanel", {
+        name: game.i18n.localize(`ECHPF1.Settings.ShowReactionActionPanel.name`),
+        hint: game.i18n.localize(`ECHPF1.Settings.ShowReactionActionPanel.desc`),
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+        requiresReload : true
+    });
 }

@@ -107,7 +107,9 @@
       "Swift": "Schnell",
       "Immediate": "Augenblicklich",
       "Free": "Freie",
-      "None": "Keine"
+      "None": "Keine",
+      "Action": "Aktion",
+      "Reaction": "Reaktion"
     },
     "ItemTypes": {
       "Spell": "Zauber",

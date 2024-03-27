@@ -1,5 +1,6 @@
 ## v0.9.3
 - Exclude 0 level classes from token description
+- Add support for unchained action economy
 
 ## v0.9.2
 - Simply spell selection if only one spellbook is active

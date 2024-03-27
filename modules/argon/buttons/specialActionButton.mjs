@@ -1,4 +1,4 @@
-import {createBuff, ucFirst, useAction} from "../../util.mjs";
+import {createBuff, ucFirst, useAction, useUnchainedAction} from "../../util.mjs";
 import {ModuleName} from "../../ech-pf1.mjs";
 
 export function specialActionButton(ARGON) {
@@ -21,6 +21,16 @@ export function specialActionButton(ARGON) {
             return game.i18n.localize(`ECHPF1.Actions.${ucFirst(this.type)}`);
         }
 
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
+
         get isValid() {
             return true;
         }
@@ -29,9 +39,29 @@ export function specialActionButton(ARGON) {
             return true;
         }
 
+
+        get actionCost() {
+            if (!this.isUnchained) {
+                return 1;
+            }
+
+            switch (this.type) {
+                case "dirtyTrick":
+                case "reposition":
+                case "drag":
+                case "grapple":
+                case "totalDefense":
+                case "steal":
+                    return 2;
+
+                default:
+                    return 1;
+            }
+        }
+
         async getTooltipData() {
             let subtitle = null;
-            switch(this.type) {
+            switch (this.type) {
                 case "bullRush":
                 case "dirtyTrick":
                 case "disarm":
@@ -145,7 +175,7 @@ export function specialActionButton(ARGON) {
                 case "totalDefense":
                 case "fightingDefensively":
                     let buff = await this.actor.getItemByTag(this.type);
-                    if(!buff) {
+                    if (!buff) {
                         buff = await createBuff(this.actor, this.type);
                     }
                     await buff?.update({
@@ -154,7 +184,11 @@ export function specialActionButton(ARGON) {
                     break;
             }
 
-            useAction(this.actionType);
+            if (this.isUnchained) {
+                useUnchainedAction(this.actionType, this.actionCost);
+            } else {
+                useAction(this.actionType);
+            }
         }
 
         get colorScheme() {

@@ -8,6 +8,28 @@ export function unique(array) {
     return array.filter((value, index, self) => self.indexOf(value) === index);
 }
 
+export function useUnchainedAction(actionType, actionCost = 1) {
+    let panels = {}
+    for (const panel of ui.ARGON.components.main) {
+        panels[panel.actionType] = panel;
+    }
+
+    switch (actionType) {
+        case "action":
+            panels.action.actionsUsed += actionCost;
+            panels.action.updateActionUse();
+            break;
+
+        case "reaction":
+            if (!panels.reaction?.isActionUsed) {
+                panels.reaction.isActionUsed = true;
+                panels.reaction.updateActionUse();
+            }
+            break;
+    }
+
+}
+
 export function useAction(actionType, nest = true) {
     let panels = {}
     for (const panel of ui.ARGON.components.main) {
@@ -207,7 +229,7 @@ export const weaponProperties = {
     trp: "PF1.WeaponPropTrip",
 };
 
-export function simplifyFormula(formula, rollData = {}, { combine = true } = {}) {
+export function simplifyFormula(formula, rollData = {}, {combine = true} = {}) {
     const originalTerms = RollPF.parse(stripRollFlairs(formula), rollData);
 
     const semiEvalTerms = [];
@@ -224,13 +246,13 @@ export function simplifyFormula(formula, rollData = {}, { combine = true } = {})
                 const right = originalTerms.shift();
                 const terms = [left, term, right];
                 const roll = RollPF.fromTerms(terms);
-                roll.evaluate({ async: false });
-                semiEvalTerms.push(new NumericTerm({ number: roll.total }));
+                roll.evaluate({async: false});
+                semiEvalTerms.push(new NumericTerm({number: roll.total}));
             } else {
                 semiEvalTerms.push(term);
             }
         } else if (term instanceof CONFIG.Dice.termTypes.SizeRollTerm) {
-            term.evaluate({ async: false });
+            term.evaluate({async: false});
             semiEvalTerms.push(term);
         } else if (term.isDeterministic) {
             const evl = RollPF.safeTotal(term.formula);
@@ -387,8 +409,8 @@ export async function renderSaveString(action, rollData) {
     const saveType = game.i18n.localize(`PF1.SavingThrow${ucFirst(action.data.save.type)}`);
 
     let saveDC = action.data.save.dc;
-    if(action.item.type === "spell") {
-       saveDC += action.item.spellbook.baseDCFormula;
+    if (action.item.type === "spell") {
+        saveDC += action.item.spellbook.baseDCFormula;
     }
 
     saveDC = (await RollPF.safeRoll(saveDC, rollData)).total;

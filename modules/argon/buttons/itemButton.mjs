@@ -4,7 +4,7 @@ import {
     renderDamageString, renderSaveString, renderTemplateString,
     spellSchools,
     ucFirst,
-    useAction,
+    useAction, useUnchainedAction,
     weaponProperties
 } from "../../util.mjs";
 
@@ -16,6 +16,16 @@ export function itemButton(ARGON) {
             this._parent = args.parent;
         }
 
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
+
         get actionType() {
             if (this.parent?.actionType) {
                 return this.parent.actionType;
@@ -24,6 +34,10 @@ export function itemButton(ARGON) {
             if (this.parent?.parent?.actionType) {
                 return this.parent.parent.actionType
             }
+        }
+
+        get actionCost() {
+            return this.isUnchained ? this.item.firstAction?.data.activation.unchained.cost : 1;
         }
 
         get isValid() {
@@ -91,7 +105,7 @@ export function itemButton(ARGON) {
                             .join(", ")
                     })
 
-                    if(item.firstAction.data.spellEffect) {
+                    if (item.firstAction.data.spellEffect) {
                         details.push({
                             label: game.i18n.localize("PF1.SpellEffect"),
                             value: item.firstAction.data.spellEffect
@@ -129,7 +143,7 @@ export function itemButton(ARGON) {
                         subtitle = item.system.subType ? game.i18n.localize(`PF1.EquipType${ucFirst(item.system.subType)}`) : null;
                     }
 
-                    if(item.system.armor.value) {
+                    if (item.system.armor.value) {
                         details.push({
                             label: game.i18n.localize("PF1.ACNormal"),
                             value: ('+' + item.system.armor.value).replace('+-', '-')
@@ -204,7 +218,7 @@ export function itemButton(ARGON) {
                     })
                 }
 
-                if(action.data.duration.value) {
+                if (action.data.duration.value) {
                     details.push({
                         label: game.i18n.localize("PF1.Duration"),
                         value: action.data.duration.value
@@ -219,7 +233,7 @@ export function itemButton(ARGON) {
                 }
             }
 
-            if(item.system.sr) {
+            if (item.system.sr) {
                 details.push({
                     label: game.i18n.localize("PF1.SpellResistance"),
                     value: game.i18n.localize("PF1.Yes")
@@ -256,7 +270,13 @@ export function itemButton(ARGON) {
 
         async _onLeftClick(event) {
             await this.item.use();
-            useAction(this.actionType);
+
+            if(this.isUnchained) {
+                useUnchainedAction(this.actionType, this.actionCost);
+            }
+            else {
+                useAction(this.actionType);
+            }
 
             if (this.parent.isAccordionPanelCategory) {
                 this.parent.use();

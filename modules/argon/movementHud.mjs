@@ -1,10 +1,14 @@
-import {useAction} from "../util.mjs";
+import {useAction, useUnchainedAction} from "../util.mjs";
 
 export function movementHud(ARGON) {
     return class Pathfinder1eMovementHud extends ARGON.MovementHud {
         constructor(props) {
             super(props);
             this.triggerCount = 0;
+        }
+
+        get isUnchained() {
+            return game.settings.get("pf1", "unchainedActionEconomy");
         }
 
         get movementMax() {
@@ -16,15 +20,33 @@ export function movementHud(ARGON) {
 
             switch (this.triggerCount) {
                 case 0:
-                    if (this.movementUsed > 1) {
-                        useAction("move");
-                        this.triggerCount++;
+                    if (this.isUnchained) {
+                        if (this.movementUsed > 0) {
+                            useUnchainedAction("action")
+                            this.triggerCount++;
+                        }
+                    } else {
+
+                        if (this.movementUsed > 1) {
+                            useAction("move");
+                            this.triggerCount++;
+                        }
                     }
+
                     break;
                 case 1:
                     if (this.movementUsed > this.movementMax) {
-                        useAction("standard");
+                        if (this.isUnchained) useUnchainedAction("action")
+                        else useAction("standard");
                         this.triggerCount++;
+                    }
+                    break;
+                case 2:
+                    if (this.isUnchained) {
+                        if (this.movementUsed > this.movementMax * 2) {
+                            useUnchainedAction("action")
+                            this.triggerCount++;
+                        }
                     }
                     break;
                 default:

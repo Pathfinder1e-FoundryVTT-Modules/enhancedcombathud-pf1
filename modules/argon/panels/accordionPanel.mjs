@@ -4,6 +4,16 @@ export function accordionPanel(ARGON) {
             return this.parent?.actionType;
         }
 
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
+
         async toggleDefaults() {
             this._subPanels[0].toggle(true)
         }
@@ -21,6 +31,16 @@ export function accordionPanelCategory(ARGON) {
         constructor(args) {
             super(args);
             this.isAccordionPanelCategory = true;
+        }
+
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
         }
 
         get buttonMultipliers() {

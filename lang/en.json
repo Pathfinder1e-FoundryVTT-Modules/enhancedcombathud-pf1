@@ -107,7 +107,9 @@
       "Swift": "Swift",
       "Immediate": "Immediate",
       "Free": "Free",
-      "None": "None"
+      "None": "None",
+      "Action": "Action",
+      "Reaction": "Reaction"
     },
     "ItemTypes": {
       "Spell": "Spell",
