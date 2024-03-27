@@ -39,7 +39,20 @@
       "ShowWeaponsInFullPanel": {
         "name": "Waffen im Aktionspanel für Volle Runde anzeigen",
         "desc": "Wenn diese Option aktiviert ist, werden Waffenangriffe ebenfalls im Aktionspanel für Volle Runden angezeigt."
+      },
+      "UnchainedActions": {
+        "name": "Aktionen im alternativen Aktionssystem",
+        "desc": "Die Anzahl an Aktionen, die einem Charakter im Alternativen Aktionssystem zur Verfügung stehen."
+      },
+      "ShowUnchainedActionPanel": {
+        "name": "Aktionen anzeigen",
+        "desc": "Zeigt das Aktionen im Aktionspanel, wenn das Alternative Aktionssystem aktiviert ist."
+      },
+      "ShowReactionActionPanel": {
+        "name": "Reaktionen anzeigen",
+        "desc": "Zeigt die Reaktionenim Aktionspanel an, wenn das Alternative Aktionssystem aktiviert ist."
       }
+
     },
     "MR": "LR",
     "Abbr": {

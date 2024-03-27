@@ -271,10 +271,9 @@ export function itemButton(ARGON) {
         async _onLeftClick(event) {
             await this.item.use();
 
-            if(this.isUnchained) {
+            if (this.isUnchained) {
                 useUnchainedAction(this.actionType, this.actionCost);
-            }
-            else {
+            } else {
                 useAction(this.actionType);
             }
 

@@ -333,11 +333,11 @@ function unchainedActionPanel(ARGON) {
         }
 
         get maxActions() {
-            return 3;
+            return game.settings.get(ModuleName, "UnchainedActions");
         }
 
         get currentActions() {
-            return Math.max(0, 3 - this.actionsUsed);
+            return Math.max(0, this.maxActions - this.actionsUsed);
         }
 
         _onNewRound(combat) {

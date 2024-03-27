@@ -71,6 +71,16 @@ export function registerSettings() {
         requiresReload : true
     });
 
+    game.settings.register(ModuleName, "UnchainedActions", {
+        name: game.i18n.localize(`ECHPF1.Settings.UnchainedActions.name`),
+        hint: game.i18n.localize(`ECHPF1.Settings.UnchainedActions.desc`),
+        scope: "world",
+        config: true,
+        type: Number,
+        default: 3,
+        requiresReload : true
+    });
+
     game.settings.register(ModuleName, "ShowUnchainedActionPanel", {
         name: game.i18n.localize(`ECHPF1.Settings.ShowUnchainedActionPanel.name`),
         hint: game.i18n.localize(`ECHPF1.Settings.ShowUnchainedActionPanel.desc`),

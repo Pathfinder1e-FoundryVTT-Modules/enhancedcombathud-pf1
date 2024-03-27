@@ -39,6 +39,18 @@
       "ShowWeaponsInFullPanel": {
         "name": "Show Weapons in Full Panel",
         "desc": "When active, weapon attacks are also listed in the full action panel."
+      },
+      "UnchainedActions": {
+        "name": "Unchained Action Count",
+        "desc": "The number of actions available to the character has available using the Unchained Action Economy rules."
+      },
+      "ShowUnchainedActionPanel": {
+        "name": "Show Unchained Action Panel",
+        "desc": "Show the Unchained Action panel in the Actions tab, if unchained action economy is enabled."
+      },
+      "ShowReactionActionPanel": {
+        "name": "Show Reaction Action Panel",
+        "desc": "Show the Reaction Action panel in the Actions tab, if unchained action economy is enabled."
       }
     },
     "MR": "MR",
