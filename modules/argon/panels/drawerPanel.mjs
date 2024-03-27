@@ -111,11 +111,11 @@ export function drawerPanel(ARGON) {
                                 skillButtonGroup.push(new DrawerButton([
                                     {
                                         label: '- ' + (subSkill.name || game.i18n.localize(`PF1.Skill${ucFirst(subSkillId)}`)),
-                                        onClick: () => actor.rollSkill(subSkillId)
+                                        onClick: () => actor.rollSkill(`${skillId}.subSkills.${subSkillId}`)
                                     },
                                     {
                                         label: subSkill.mod,
-                                        onClick: () => actor.rollSkill(subSkillId),
+                                        onClick: () => actor.rollSkill(`${skillId}.subSkills.${subSkillId}`),
                                         style: "display: flex; justify-content: flex-end;"
                                     }
                                 ]))
