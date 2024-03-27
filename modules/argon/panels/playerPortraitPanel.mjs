@@ -12,7 +12,7 @@ export function playerPortraitPanel(ARGON) {
         get description() {
             switch (this.actor.type) {
                 case "character":
-                    const classes = this.actor.items.filter(item => item.type === "class");
+                    const classes = this.actor.items.filter(item => item.type === "class" && item.system.level > 0);
                     return classes.map(cClass => `${cClass.name} (${game.i18n.localize("PF1.Level")} ${cClass.system.level})`).join("/");
 
                 case "npc":
