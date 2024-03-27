@@ -145,12 +145,11 @@ export function buttonPanelItemButton(ARGON) {
                 }
 
                 for (let action of item.actions) {
-                    if(this.isUnchained) {
+                    if (this.isUnchained) {
                         if (action.data.activation.unchained.type === this.actionType) {
                             return true;
                         }
-                    }
-                    else {
+                    } else {
                         if (action.data.activation.type === this.actionType
                             && action.data.activation.cost === 1) {
                             return true;
@@ -211,6 +210,16 @@ export function spellbookButtonPanelActionButton(ARGON) {
 
         get actionType() {
             return this.parent.actionType;
+        }
+
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
         }
 
         get quantity() {
@@ -282,9 +291,15 @@ export function spellbookButtonPanelActionButton(ARGON) {
                 }
 
                 for (let action of item.actions) {
-                    if (action.data.activation.type === this.actionType
-                        && action.data.activation.cost === 1) {
-                        return true;
+                    if (this.isUnchained) {
+                        if (action.data.activation.unchained.type === this.actionType) {
+                            return true;
+                        }
+                    } else {
+                        if (action.data.activation.type === this.actionType
+                            && action.data.activation.cost === 1) {
+                            return true;
+                        }
                     }
                 }
 
@@ -330,6 +345,16 @@ export function spellButtonPanelActionButton(ARGON) {
             return this.parent.actionType;
         }
 
+        get isUnchained() {
+            if (this.parent?.isUnchained !== undefined) {
+                return this.parent.isUnchained;
+            }
+
+            if (this.parent?.parent?.isUnchained !== undefined) {
+                return this.parent.parent.isUnchained
+            }
+        }
+
         get label() {
             if (this.replacementItem) {
                 return this.replacementItem.name;
@@ -356,9 +381,15 @@ export function spellButtonPanelActionButton(ARGON) {
                 if (!item.actions) continue;
 
                 for (let action of item.actions) {
-                    if (action.data.activation.type === this.actionType
-                        && action.data.activation.cost === 1) {
-                        return true;
+                    if (this.isUnchained) {
+                        if (action.data.activation.unchained.type === this.actionType) {
+                            return true;
+                        }
+                    } else {
+                        if (action.data.activation.type === this.actionType
+                            && action.data.activation.cost === 1) {
+                            return true;
+                        }
                     }
                 }
             }

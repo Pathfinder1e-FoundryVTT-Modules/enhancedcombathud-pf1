@@ -288,6 +288,10 @@ function freeActionPanel(ARGON) {
             return "free";
         }
 
+        get isUnchained() {
+            return game.settings.get("pf1", "unchainedActionEconomy");
+        }
+
         async _getButtons() {
             let buttons = [];
 
@@ -437,6 +441,5 @@ function reactionActionPanel(ARGON) {
         get isUnchained() {
             return true;
         }
-
     }
 }
