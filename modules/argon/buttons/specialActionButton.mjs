@@ -125,7 +125,9 @@ export function specialActionButton(ARGON) {
                 case "reposition":
                 case "sunder":
                 case "trip":
-                    await this.actor.rollCMB();
+                    await this.actor.rollCMB({
+                        cmbType: this.type
+                    });
                     break;
 
                 case "dropProne":
