@@ -143,9 +143,6 @@ export function itemButton(ARGON) {
                             value: '-' + item.system.armor.acp
                         })
                     }
-
-                    console.log(item)
-
                     break;
             }
 

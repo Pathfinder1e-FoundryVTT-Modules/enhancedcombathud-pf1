@@ -112,7 +112,6 @@ function standardActionPanel(ARGON) {
                 new SpecialActionButton({parent: this, type: "feint"})
             ))
 
-            console.log(this.actor);
             if (this.hasMultipleSpellbooks) {
                 buttons.push(new SpellButtonPanelActionButton({parent: this}));
             } else {
