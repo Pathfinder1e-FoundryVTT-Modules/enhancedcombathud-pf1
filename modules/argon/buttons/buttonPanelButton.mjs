@@ -377,6 +377,20 @@ export function spellButtonPanelActionButton(ARGON) {
             for (let item of this.actor.items) {
                 if (item.type !== "spell") continue;
 
+                if (!item.canCast) {
+                    return false;
+                }
+
+                if (item.spellbook.spellPreparationMode === "prepared" && !item.useSpellPoints()) {
+                    if (item.system.preparation.maxAmount === 0) {
+                        return false;
+                    }
+                } else {
+                    if (!item.system.preparation.spontaneousPrepared) {
+                        return false;
+                    }
+                }
+
                 if (!usedSpellbooks.includes(item.system.spellbook)) continue;
 
                 if (!item.actions) continue;
