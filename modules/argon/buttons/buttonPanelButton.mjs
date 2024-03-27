@@ -378,16 +378,16 @@ export function spellButtonPanelActionButton(ARGON) {
                 if (item.type !== "spell") continue;
 
                 if (!item.canCast) {
-                    return false;
+                   continue;
                 }
 
                 if (item.spellbook.spellPreparationMode === "prepared" && !item.useSpellPoints()) {
                     if (item.system.preparation.maxAmount === 0) {
-                        return false;
+                        continue;
                     }
                 } else {
                     if (!item.system.preparation.spontaneousPrepared) {
-                        return false;
+                        continue;
                     }
                 }
 
