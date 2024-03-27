@@ -308,7 +308,8 @@ export function spellbookButtonPanelActionButton(ARGON) {
         }
 
         get isValid() {
-            return this.validItems.length;
+            const usedSpellbooks = this.actor.system.attributes.spells.usedSpellbooks;
+            return usedSpellbooks.includes(this.spellbookId) && this.validItems.length;
         }
 
         get icon() {
