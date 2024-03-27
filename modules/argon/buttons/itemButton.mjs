@@ -278,7 +278,7 @@ export function itemButton(ARGON) {
             }
 
             if (this.parent.isAccordionPanelCategory) {
-                this.parent.use();
+                Hooks.callAll("ECHPF1.spellUsed", this.item);
             }
         }
     }

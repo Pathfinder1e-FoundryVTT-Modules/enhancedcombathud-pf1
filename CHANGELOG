@@ -4,6 +4,7 @@
 - Remove disabled spellbooks that contain spells from action bar
 - Remove spells button from showing up in action section, if no spells are available for that section
 - Fix subskills not being rollable from drawer panel
+- Sync spontaneous spell slot usage between actions
 
 ## v0.9.2
 - Simplify spell selection if only one spellbook is active

@@ -260,7 +260,10 @@ export function spellbookButtonPanelActionButton(ARGON) {
                         max: (level && hasSpellUses) ? spellLevelInfo.max : null,
                         value: (level && hasSpellUses) ? spellLevelInfo.value : null
                     },
-                    buttons: spells.filter(item => item.system.level === level)
+                    buttons: spells.filter(item => item.system.level === level),
+                    spellLevel: level,
+                    spellbookId: this.spellbookId,
+                    isSpellCategory: true
                 });
             }
 
@@ -324,9 +327,9 @@ export function spellbookButtonPanelActionButton(ARGON) {
             return new AccordionPanel({
                 accordionPanelCategories: this.categories
                     .map(category => new AccordionPanelCategory({
-                        label: category.label,
-                        uses: category.uses,
-                        buttons: category.buttons.map(item => new ItemButton({item}))
+                        ...category,
+                        buttons: category.buttons.map(item => new ItemButton({item})),
+                        isSpellCategory: true
                     }))
             });
         }

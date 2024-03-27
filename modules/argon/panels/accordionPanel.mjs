@@ -1,3 +1,17 @@
+let spellAccordionPanelCategories = {
+    "primary": {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []},
+    "secondary": {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []},
+    "tertiary": {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []},
+    "spelllike": {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: []},
+}
+Hooks.on("ECHPF1.spellUsed", (item) => {
+    const categories = spellAccordionPanelCategories[item.system.spellbook][item.system.level];
+    categories.map(category => {
+        category.use();
+    })
+});
+
+
 export function accordionPanel(ARGON) {
     return class Pathfinder1eAccordionPanel extends ARGON.MAIN.BUTTON_PANELS.ACCORDION.AccordionPanel {
         get actionType() {
@@ -31,6 +45,10 @@ export function accordionPanelCategory(ARGON) {
         constructor(args) {
             super(args);
             this.isAccordionPanelCategory = true;
+
+            if (args.isSpellCategory) {
+                spellAccordionPanelCategories[args.spellbookId][args.spellLevel].push(this);
+            }
         }
 
         get isUnchained() {
