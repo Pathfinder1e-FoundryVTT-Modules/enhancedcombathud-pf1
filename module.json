@@ -1,7 +1,7 @@
 {
   "id": "enhancedcombathud-pf1",
   "title": "Argon - Combat HUD (PF1)",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
