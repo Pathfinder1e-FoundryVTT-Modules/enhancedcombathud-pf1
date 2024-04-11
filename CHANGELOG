@@ -3,6 +3,7 @@
 - Disable tooltips for empty action buttons
 - Fix console error when rendering HUD without actor selected
 - Add a new option to highlight range when hovering item actions
+- Use fly speed for movement when active token is elevated
 
 ## v0.9.3
 - Exclude 0 level classes from token description
