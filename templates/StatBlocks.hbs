@@ -2,7 +2,8 @@
     {{#if stats.length}}
     <div class="portrait-stat-block stacked-stats {{side}}">
         {{#each stats as |stat|}}
-            <div class="portrait-stat {{#if stat.hidden}}hidden{{/if}}" data-key="{{stat.id}}" data-tooltip="{{stat.tooltip}}">
+            <div class="portrait-stat {{#if stat.hidden}}hidden{{/if}}" data-key="{{stat.id}}"
+                 data-tooltip="{{stat.tooltip}}" data-tooltip-direction="UP">
                 <span class="label">{{stat.label}}</span>
                 <span class="value" style="color: {{stat.color}}">{{stat.value}}</span>
             </div>
