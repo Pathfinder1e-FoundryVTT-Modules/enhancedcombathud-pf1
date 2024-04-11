@@ -12,7 +12,7 @@ export function movementHud(ARGON) {
         }
 
         get movementMax() {
-            return Math.floor(this.actor.system.attributes.speed.land.total / 5);
+            return Math.floor(this.actor?.system.attributes.speed.land.total / 5);
         }
 
         updateMovement() {
