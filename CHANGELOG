@@ -1,3 +1,8 @@
+## 0.9.4
+- Top-align portrait tooltips to avoid overlapping actual text
+- Disable tooltips for empty action buttons
+- Fix console error when rendering HUD without actor selected
+
 ## v0.9.3
 - Exclude 0 level classes from token description
 - Add support for unchained action economy
