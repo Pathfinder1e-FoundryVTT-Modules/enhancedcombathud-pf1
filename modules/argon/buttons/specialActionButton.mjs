@@ -60,6 +60,10 @@ export function specialActionButton(ARGON) {
         }
 
         async getTooltipData() {
+            if(this.type === "none") {
+                return null;
+            }
+
             let subtitle = null;
             switch (this.type) {
                 case "bullRush":
