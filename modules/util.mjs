@@ -303,27 +303,6 @@ export function simplifyFormula(formula, rollData = {}, {combine = true} = {}) {
     return combinedTerms.map((tt) => tt.formula).join("");
 }
 
-export function getDistanceSystem() {
-    let system = game.settings.get("pf1", "distanceUnits"); // override
-    if (system === "default") system = game.settings.get("pf1", "units");
-    return system;
-}
-
-export function convertDistance(value, type = "ft") {
-    const system = getDistanceSystem();
-    switch (system) {
-        case "metric":
-            switch (type) {
-                case "mi":
-                    return [Math.round(value * 1.6 * 100) / 100, "km"];
-                default:
-                    return [Math.round((value / 5) * 1.5 * 100) / 100, "m"];
-            }
-        default:
-            return [value, type];
-    }
-}
-
 export function renderAttackString(action) {
     return action.item.attackArray.map((attack) => {
         const value = Math.floor(attack)
@@ -423,6 +402,6 @@ export async function renderSaveString(action, rollData) {
 export function renderTemplateString(action) {
 
     const targetType = game.i18n.localize(`PF1.MeasureTemplate${ucFirst(action.data.measureTemplate.type)}`);
-    const distance = convertDistance(action.data.measureTemplate.size);
+    const distance = pf1.utils.convertDistance(action.data.measureTemplate.size);
     return `${targetType} ${distance[0]} ${distance[1]}`;
 }

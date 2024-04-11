@@ -51,6 +51,10 @@
       "ShowReactionActionPanel": {
         "name": "Reaktionen anzeigen",
         "desc": "Zeigt die Reaktionenim Aktionspanel an, wenn das Alternative Aktionssystem aktiviert ist."
+      },
+      "ShowActionReachOnCanvas": {
+        "name": "Reichweite im Aktionspanel anzeigen",
+        "desc": "Zeigt die Reichweite des aktuellen Token auf der Karte, wenn die Maus über einer Aktion liegt."
       }
     },
     "MR": "LR",

@@ -2,6 +2,7 @@
 - Top-align portrait tooltips to avoid overlapping actual text
 - Disable tooltips for empty action buttons
 - Fix console error when rendering HUD without actor selected
+- Add a new option to highlight range when hovering item actions
 
 ## v0.9.3
 - Exclude 0 level classes from token description

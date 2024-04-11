@@ -1,6 +1,16 @@
 import {ModuleName} from "./ech-pf1.mjs";
 
 export function registerSettings() {
+    game.settings.register(ModuleName, "ShowActionReachOnCanvas", {
+        name: game.i18n.localize(`ECHPF1.Settings.ShowActionReachOnCanvas.name`),
+        hint: game.i18n.localize(`ECHPF1.Settings.ShowActionReachOnCanvas.desc`),
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+        requiresReload : true
+    });
+
     game.settings.register(ModuleName, "ShowStandardActionPanel", {
         name: game.i18n.localize(`ECHPF1.Settings.ShowActionPanelStandard.name`),
         hint: game.i18n.localize(`ECHPF1.Settings.ShowActionPanelStandard.desc`),

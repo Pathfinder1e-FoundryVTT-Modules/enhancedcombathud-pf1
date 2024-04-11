@@ -51,6 +51,10 @@
       "ShowReactionActionPanel": {
         "name": "Show Reaction Action Panel",
         "desc": "Show the Reaction Action panel in the Actions tab, if unchained action economy is enabled."
+      },
+      "ShowActionReachOnCanvas": {
+        "name": "Show Action Reach on Canvas",
+        "desc": "Show the reach of the active token on the canvas when an action is hovered."
       }
     },
     "MR": "MR",

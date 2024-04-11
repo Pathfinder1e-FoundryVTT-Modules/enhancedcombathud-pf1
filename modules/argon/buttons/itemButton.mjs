@@ -1,12 +1,19 @@
 import {
     abilityTypes,
-    convertDistance, renderAttackString, renderCriticalChanceString,
+    renderAttackString, renderCriticalChanceString,
     renderDamageString, renderSaveString, renderTemplateString,
     spellSchools,
     ucFirst,
     useAction, useUnchainedAction,
     weaponProperties
 } from "../../util.mjs";
+import {
+    clearRangeFinders,
+    clearRanges,
+    showRangeFinder,
+    showRangeRings
+} from "../../../../enhancedcombathud/scripts/core/components/main/buttons/itemButton.js";
+import {ModuleName} from "../../ech-pf1.mjs";
 
 
 export function itemButton(ARGON) {
@@ -196,7 +203,7 @@ export function itemButton(ARGON) {
                 }
 
                 if (action.maxRange && action.maxRange) {
-                    const distanceValues = convertDistance(action.maxRange);
+                    const distanceValues = pf1.utils.convertDistance(action.maxRange);
                     details.push({
                         label: game.i18n.localize("PF1.Range"),
                         value: action.maxRange > 0 ? `${action.maxRange} ${distanceValues[1]}` : null
@@ -204,7 +211,7 @@ export function itemButton(ARGON) {
                 }
 
                 if (action.minRange) {
-                    const distanceValues = convertDistance(action.minRange);
+                    const distanceValues = pf1.utils.convertDistance(action.minRange);
                     details.push({
                         label: game.i18n.localize("PF1.MinRange"),
                         value: action.minRange > 0 ? `${action.minRange} ${distanceValues[1]}` : null
@@ -280,6 +287,28 @@ export function itemButton(ARGON) {
             if (this.parent.isAccordionPanelCategory) {
                 Hooks.callAll("ECHPF1.spellUsed", this.item);
             }
+        }
+
+        async _onMouseEnter(event) {
+            super._onMouseEnter(event);
+
+            if(game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
+                pf1.canvas.attackReach.showAttackReach(this.token, this.item, this.item.firstAction);
+            }
+        }
+
+        async _onMouseLeave(event) {
+            super._onMouseLeave(event);
+            if(game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
+                pf1.canvas.attackReach.clearHighlight();
+            }
+        }
+
+        activateListeners(html) {
+            this.element.onmouseup = this._onMouseUp.bind(this);
+            this.element.onmousedown = this._onMouseDown.bind(this);
+            this.element.onmouseover = this._onMouseEnter.bind(this);
+            this.element.onmouseout = this._onMouseLeave.bind(this);
         }
     }
 }
