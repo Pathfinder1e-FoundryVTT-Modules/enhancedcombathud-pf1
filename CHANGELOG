@@ -6,6 +6,7 @@
 - Use fly speed for movement when active token is elevated
 - Add default weapon sets for actors
 - Shorten "Full Round" action bar label to "Full"
+- Fix combat hud crashing when creature has no type or class
 
 ## v0.9.3
 - Exclude 0 level classes from token description

@@ -1,7 +1,7 @@
 export const stripRollFlairs = (formula) => formula.replace(/\[[^\]]*]/g, "");
 
 export function ucFirst(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    return string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
 }
 
 export function unique(array) {
