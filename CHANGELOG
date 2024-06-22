@@ -1,3 +1,9 @@
+## 0.10.1
+- Update for Pathfinder v10
+- Expand item tooltips to include more useful information
+- Prevent weapons from becoming unequipped when switching weapon sets
+- Only allow weapons with attack actions and attacks for weapon sets
+
 ## 0.9.4
 - Top-align portrait tooltips to avoid overlapping actual text
 - Disable tooltips for empty action buttons

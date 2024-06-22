@@ -159,6 +159,9 @@
         "TotalDefense1": "Volle Verteidigung kann nicht mit Defensive Kampfweise kombiniert werden.",
         "TotalDefense2": "Kann keine Gelegenheitsangriffe ausführen, da in Voller Verteidigung."
       }
+    },
+    "Error": {
+      "CannotAddNonAttackAction": "Nur Angriffe oder Gegenstände mit verbundenen Angriffen können hinzugefügt werden."
     }
   }
 }

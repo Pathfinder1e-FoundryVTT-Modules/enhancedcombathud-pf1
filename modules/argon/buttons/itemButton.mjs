@@ -1,8 +1,11 @@
 import {
-    renderAttackString, renderCriticalChanceString,
-    renderSaveString, renderTemplateString,
+    renderAttackString,
+    renderCriticalChanceString,
+    renderSaveString,
+    renderTemplateString,
     ucFirst,
-    useAction, useUnchainedAction
+    useAction,
+    useUnchainedAction
 } from "../../util.mjs";
 import {ModuleName} from "../../ech-pf1.mjs";
 
@@ -76,12 +79,12 @@ export function itemButton(ARGON) {
             switch (item.type) {
                 case "spell":
                     subtitle = pf1.config.spellSchools[item.system.school];
-                    propertiesLabel = game.i18n.localize("PF1.Spell");
-
                     propertiesLabel = game.i18n.localize("PF1.DescriptorPlural");
                     properties = Array.from(item.system.descriptors.total)
                         .filter(type => type.trim().length)
-                        .map(type => {return {label: type.trim()}})
+                        .map(type => {
+                            return {label: type.trim()}
+                        })
 
                     if (item.system.subschool) {
                         details.push({
@@ -112,13 +115,6 @@ export function itemButton(ARGON) {
                     break;
 
                 case "weapon":
-                    const weaponGroupData = item.system.weaponGroups;
-                    let weaponGroups = weaponGroupData.value.map((group) => pf1.config.weaponGroups[group]);
-                    if (weaponGroupData.custom) {
-                        weaponGroups.push(weaponGroupData.custom);
-                    }
-                    subtitle = weaponGroups.join(", ");
-
                     propertiesLabel = game.i18n.localize("PF1.WeaponProperties");
                     properties = Object.entries(item.system.properties)
                         .filter(prop => prop[1])
@@ -127,6 +123,56 @@ export function itemButton(ARGON) {
                                 label: pf1.config.weaponProperties[prop[0]]
                             }
                         })
+                // Intentional fallthrough
+                case "attack":
+                    const weaponGroupData = item.system.weaponGroups;
+                    let weaponGroups = weaponGroupData.value.map((group) => pf1.config.weaponGroups[group]);
+                    if (weaponGroupData.custom.length) {
+                        weaponGroups.push(...weaponGroupData.custom);
+                    }
+                    subtitle = weaponGroups.join(", ");
+
+                    if (item.system.masterwork) {
+                        properties.push({
+                            label: game.i18n.localize("PF1.Masterwork"),
+                        })
+                    }
+
+                    if (item.system.broken) {
+                        properties.push({
+                            label: game.i18n.localize("PF1.Broken"),
+                        })
+                    }
+
+                    for (let i in item.system.alignments) {
+                        if (item.system.alignments[i]) {
+                            properties.push({
+                                label: pf1.config.damageResistances[i]
+                            })
+                        }
+                    }
+
+                    if (item.system.material.normal.value) {
+                        properties.push({
+                            label: item.system.material.normal.custom
+                                ? item.system.material.normal.value
+                                : pf1.registry.materialTypes.get(item.system.material.normal.value)?.name
+                        })
+                    }
+
+                    if (item.system.enh || item.system.material.addon.includes("magic")) {
+                        properties.push({
+                            label: game.i18n.localize("PF1.Materials.Types.Magic")
+                                + (item.system.enh ? " (+" + item.system.enh + ')' : "")
+                        })
+                    }
+
+                    if (item.system.material.addon.includes("epic")) {
+                        properties.push({
+                            label: game.i18n.localize("PF1.Materials.Types.Epic")
+                        })
+                    }
+
                     break;
 
                 case "equipment":
@@ -177,7 +223,7 @@ export function itemButton(ARGON) {
                 if (action.hasDamage) {
                     details.push({
                         label: game.i18n.localize(action.isHealing ? "PF1.Healing" : "PF1.Damage"),
-                        value: pf1.utils.formula.actionDamageFormula(action, rollData, {combine: false})
+                        value: pf1.utils.formula.actionDamage(action, rollData, {combine: false})
                     })
                 }
 
@@ -211,10 +257,11 @@ export function itemButton(ARGON) {
                     })
                 }
 
+                console.log(action)
                 if (action.data.duration.value) {
                     details.push({
                         label: game.i18n.localize("PF1.Duration"),
-                        value: action.data.duration.value
+                        value: action.data.duration.value + ' ' + pf1.config.timePeriods[action.data.duration.units]
                     })
                 }
 
@@ -278,14 +325,14 @@ export function itemButton(ARGON) {
         async _onMouseEnter(event) {
             super._onMouseEnter(event);
 
-            if(game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
+            if (game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
                 pf1.canvas.attackReach.showAttackReach(this.token, this.item, this.item.defaultAction);
             }
         }
 
         async _onMouseLeave(event) {
             super._onMouseLeave(event);
-            if(game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
+            if (game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
                 pf1.canvas.attackReach.clearHighlight();
             }
         }

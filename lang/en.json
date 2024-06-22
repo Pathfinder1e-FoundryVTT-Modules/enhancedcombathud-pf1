@@ -159,6 +159,9 @@
         "TotalDefense1": "Total Defense cannot be combined with Combat Expertise.",
         "TotalDefense2": "Cannot make AoO due to Total Defense."
       }
+    },
+    "Error": {
+      "CannotAddNonAttackAction": "Only attacks or items with linked attacks can be added."
     }
   }
 }
