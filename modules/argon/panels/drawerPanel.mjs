@@ -11,6 +11,8 @@ export function drawerPanel(ARGON) {
             const DrawerButton = drawerButton(ARGON);
 
             const actor = this.actor;
+            const useBackgroundSkills = game.settings.get("pf1", "allowBackgroundSkills");
+            const backgroundSkills = ["art", "lor"];
 
             return [
                 {
@@ -71,6 +73,8 @@ export function drawerPanel(ARGON) {
                     ],
                     buttons: Object.entries(actor.system.skills).map((skillData) => {
                         const [skillId, skill] = skillData;
+
+                        if(!useBackgroundSkills && backgroundSkills.includes(skillId)) return [];
 
                         let skillButtonGroup = [
                             new DrawerButton([

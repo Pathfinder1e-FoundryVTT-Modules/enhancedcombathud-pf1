@@ -3,6 +3,7 @@
 - Expand item tooltips to include more useful information
 - Prevent weapons from becoming unequipped when switching weapon sets
 - Only allow weapons with attack actions and attacks for weapon sets
+- Remove background skills from drawer when not active
 
 ## 0.9.4
 - Top-align portrait tooltips to avoid overlapping actual text
