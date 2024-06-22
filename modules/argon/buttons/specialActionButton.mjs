@@ -165,15 +165,11 @@ export function specialActionButton(ARGON) {
                     break;
 
                 case "dropProne":
-                    await this.actor.update({
-                        "system.attributes.conditions.pf1_prone": true
-                    });
+                    await this.actor.setConditions({'prone': true})
                     break;
 
                 case "standUp":
-                    await this.actor.update({
-                        "system.attributes.conditions.-=pf1_prone": null
-                    });
+                    await this.actor.setConditions({'prone': false})
                     break;
 
                 case "totalDefense":

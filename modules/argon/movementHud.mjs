@@ -12,7 +12,7 @@ export function movementHud(ARGON) {
         }
 
         get movementMax() {
-            let isElevated = this.token?.data.elevation > 0;
+            let isElevated = this.token?.document.elevation > 0;
 
             const landSpeed = this.actor?.system.attributes.speed.land.total;
             const flySpeed = this.actor?.system.attributes.speed.fly.total || landSpeed;

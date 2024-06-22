@@ -1,4 +1,4 @@
-import {ucFirst, unique} from "../../util.mjs";
+import {getUsedSpellBookIds, ucFirst, unique} from "../../util.mjs";
 import {itemButton} from "./itemButton.mjs";
 import {specialActionButton} from "./specialActionButton.mjs";
 import {ModuleName} from "../../ech-pf1.mjs";
@@ -278,16 +278,16 @@ export function spellbookButtonPanelActionButton(ARGON) {
                 }
 
                 if (item.type === "spell") {
-                    if (!item.canCast) {
+                    if (!item.canUse) {
                         return false;
                     }
 
                     if (item.spellbook.spellPreparationMode === "prepared" && !item.useSpellPoints()) {
-                        if (item.system.preparation.maxAmount === 0) {
+                        if (item.system.preparation.max === 0) {
                             return false;
                         }
                     } else {
-                        if (!item.system.preparation.spontaneousPrepared) {
+                        if (!item.system.preparation.value) {
                             return false;
                         }
                     }
@@ -311,7 +311,7 @@ export function spellbookButtonPanelActionButton(ARGON) {
         }
 
         get isValid() {
-            const usedSpellbooks = this.actor.system.attributes.spells.usedSpellbooks;
+            const usedSpellbooks = getUsedSpellBookIds(this.actor);
             return usedSpellbooks.includes(this.spellbookId) && this.validItems.length;
         }
 
@@ -372,7 +372,7 @@ export function spellButtonPanelActionButton(ARGON) {
         }
 
         get isValid() {
-            const usedSpellbooks = this.actor.system.attributes.spells.usedSpellbooks;
+            const usedSpellbooks = getUsedSpellBookIds(this.actor);
             if (!usedSpellbooks.length) {
                 return false;
             }
@@ -380,16 +380,16 @@ export function spellButtonPanelActionButton(ARGON) {
             for (let item of this.actor.items) {
                 if (item.type !== "spell") continue;
 
-                if (!item.canCast) {
+                if (!item.canUse) {
                    continue;
                 }
 
                 if (item.spellbook.spellPreparationMode === "prepared" && !item.useSpellPoints()) {
-                    if (item.system.preparation.maxAmount === 0) {
+                    if (item.system.preparation.max === 0) {
                         continue;
                     }
                 } else {
-                    if (!item.system.preparation.spontaneousPrepared) {
+                    if (!item.system.preparation.value) {
                         continue;
                     }
                 }

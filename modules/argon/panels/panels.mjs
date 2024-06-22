@@ -1,5 +1,5 @@
 import {BaseModuleName, ModuleName} from "../../ech-pf1.mjs";
-import {ucFirst} from "../../util.mjs";
+import {getUsedSpellBookIds, ucFirst} from "../../util.mjs";
 import {
     buttonPanelActionButton,
     buttonPanelItemButton, spellbookButtonPanelActionButton,
@@ -74,7 +74,7 @@ function actionPanel(ARGON) {
         }
 
         get hasMultipleSpellbooks() {
-            return this.actor.system.attributes.spells.usedSpellbooks.length > 1;
+            return getUsedSpellBookIds(this.actor).length > 1;
         }
 
         _onNewRound(combat) {
@@ -135,7 +135,7 @@ function standardActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 
@@ -209,7 +209,7 @@ function swiftActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 
@@ -252,7 +252,7 @@ function fullActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 
@@ -306,7 +306,7 @@ function freeActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 
@@ -377,7 +377,7 @@ function unchainedActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 
@@ -427,7 +427,7 @@ function reactionActionPanel(ARGON) {
             } else {
                 buttons.push(new SpellbookButtonPanelItemButton({
                     parent: this,
-                    spellbookId: this.actor.system.attributes.spells.usedSpellbooks[0]
+                    spellbookId: getUsedSpellBookIds(this.actor)[0]
                 }));
             }
 

@@ -1,18 +1,9 @@
 import {
-    abilityTypes,
     renderAttackString, renderCriticalChanceString,
-    renderDamageString, renderSaveString, renderTemplateString,
-    spellSchools,
+    renderSaveString, renderTemplateString,
     ucFirst,
-    useAction, useUnchainedAction,
-    weaponProperties
+    useAction, useUnchainedAction
 } from "../../util.mjs";
-import {
-    clearRangeFinders,
-    clearRanges,
-    showRangeFinder,
-    showRangeRings
-} from "../../../../enhancedcombathud/scripts/core/components/main/buttons/itemButton.js";
 import {ModuleName} from "../../ech-pf1.mjs";
 
 
@@ -44,7 +35,7 @@ export function itemButton(ARGON) {
         }
 
         get actionCost() {
-            return this.isUnchained ? this.item.firstAction?.data.activation.unchained.cost : 1;
+            return this.isUnchained ? this.item.defaultAction?.data.activation.unchained.cost : 1;
         }
 
         get isValid() {
@@ -84,18 +75,13 @@ export function itemButton(ARGON) {
 
             switch (item.type) {
                 case "spell":
-                    subtitle = game.i18n.localize(spellSchools[item.system.school]);
+                    subtitle = pf1.config.spellSchools[item.system.school];
                     propertiesLabel = game.i18n.localize("PF1.Spell");
 
                     propertiesLabel = game.i18n.localize("PF1.DescriptorPlural");
-                    properties = item.system.types
-                        .split(',')
+                    properties = Array.from(item.system.descriptors.total)
                         .filter(type => type.trim().length)
-                        .map(type => {
-                            return {
-                                label: type.trim()
-                            }
-                        })
+                        .map(type => {return {label: type.trim()}})
 
                     if (item.system.subschool) {
                         details.push({
@@ -108,26 +94,26 @@ export function itemButton(ARGON) {
                         label: game.i18n.localize("PF1.Components"),
                         value: Object.entries(item.system.components)
                             .filter(comp => comp[1])
-                            .map(comp => game.i18n.localize(`PF1.SpellComponentKeys.${ucFirst(comp[0])}`))
+                            .map(comp => pf1.config.spellComponents[comp[0]])
                             .join(", ")
                     })
 
-                    if (item.firstAction.data.spellEffect) {
+                    if (item.defaultAction.data.spellEffect) {
                         details.push({
                             label: game.i18n.localize("PF1.SpellEffect"),
-                            value: item.firstAction.data.spellEffect
+                            value: item.defaultAction.data.spellEffect
                         })
                     }
 
                     break;
 
                 case "feat":
-                    subtitle = item.system.abilityType ? game.i18n.localize(abilityTypes[item.system.abilityType]?.long) : null;
+                    subtitle = item.system.abilityType ? pf1.config.abilityTypes[item.system.abilityType]?.long : null;
                     break;
 
                 case "weapon":
                     const weaponGroupData = item.system.weaponGroups;
-                    let weaponGroups = weaponGroupData.value.map((group) => game.i18n.localize(`PF1.WeaponGroup${ucFirst(group)}`));
+                    let weaponGroups = weaponGroupData.value.map((group) => pf1.config.weaponGroups[group]);
                     if (weaponGroupData.custom) {
                         weaponGroups.push(weaponGroupData.custom);
                     }
@@ -138,16 +124,16 @@ export function itemButton(ARGON) {
                         .filter(prop => prop[1])
                         .map(prop => {
                             return {
-                                label: game.i18n.localize(weaponProperties[prop[0]])
+                                label: pf1.config.weaponProperties[prop[0]]
                             }
                         })
                     break;
 
                 case "equipment":
                     if (item.system.subType === "wondrous") {
-                        subtitle = item.system.subType ? game.i18n.localize(`PF1.EquipSlot${ucFirst(item.system.slot)}`) : null;
+                        subtitle = item.system.subType ? pf1.config.equipmentSlots[item.system.slot] : null;
                     } else {
-                        subtitle = item.system.subType ? game.i18n.localize(`PF1.EquipType${ucFirst(item.system.subType)}`) : null;
+                        subtitle = item.system.subType ? pf1.config.equipmentTypes[item.system.subType] : null;
                     }
 
                     if (item.system.armor.value) {
@@ -167,7 +153,7 @@ export function itemButton(ARGON) {
                     break;
             }
 
-            const action = item.firstAction;
+            const action = item.defaultAction;
             if (action) {
                 if (action.hasAttack) {
                     details.push({
@@ -191,7 +177,7 @@ export function itemButton(ARGON) {
                 if (action.hasDamage) {
                     details.push({
                         label: game.i18n.localize(action.isHealing ? "PF1.Healing" : "PF1.Damage"),
-                        value: renderDamageString(action, rollData, {combine: false})
+                        value: pf1.utils.formula.actionDamageFormula(action, rollData, {combine: false})
                     })
                 }
 
@@ -293,7 +279,7 @@ export function itemButton(ARGON) {
             super._onMouseEnter(event);
 
             if(game.settings.get(ModuleName, "ShowActionReachOnCanvas")) {
-                pf1.canvas.attackReach.showAttackReach(this.token, this.item, this.item.firstAction);
+                pf1.canvas.attackReach.showAttackReach(this.token, this.item, this.item.defaultAction);
             }
         }
 

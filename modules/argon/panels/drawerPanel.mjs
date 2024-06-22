@@ -26,7 +26,7 @@ export function drawerPanel(ARGON) {
                     buttons: ["str", "dex", "con", "int", "wis", "cha"].map(ability =>
                         new DrawerButton([
                             {
-                                label: game.i18n.localize(`PF1.Ability${ucFirst(ability)}`),
+                                label: pf1.config.abilities[ability],
                                 onClick: () => actor.rollAbilityTest(ability)
                             },
                             {
@@ -48,7 +48,7 @@ export function drawerPanel(ARGON) {
                     ],
                     buttons: ["fort", "ref", "will"].map(save => new DrawerButton([
                         {
-                            label: game.i18n.localize(`PF1.SavingThrow${ucFirst(save)}`),
+                            label: pf1.config.savingThrows[save],
                             onClick: () => actor.rollSavingThrow(save)
                         },
                         {
@@ -72,28 +72,10 @@ export function drawerPanel(ARGON) {
                     buttons: Object.entries(actor.system.skills).map((skillData) => {
                         const [skillId, skill] = skillData;
 
-                        let nameId = skillId;
-                        switch (skillId) {
-                            case "umd":
-                                nameId = "UMD";
-                                break;
-                            case "kar":
-                            case "kdu":
-                            case "ken":
-                            case "kge":
-                            case "khi":
-                            case "klo":
-                            case "kna":
-                            case "kno":
-                            case "kpl":
-                            case "kre":
-                                nameId = nameId.charAt(0) + nameId.charAt(1).toUpperCase() + nameId.charAt(2);
-                        }
-
                         let skillButtonGroup = [
                             new DrawerButton([
                                 {
-                                    label: skill.name || game.i18n.localize(`PF1.Skill${ucFirst(nameId)}`),
+                                    label: skill.name || pf1.config.skills[skillId],
                                     onClick: () => actor.rollSkill(skillId)
                                 },
                                 {
@@ -110,7 +92,7 @@ export function drawerPanel(ARGON) {
 
                                 skillButtonGroup.push(new DrawerButton([
                                     {
-                                        label: '- ' + (subSkill.name || game.i18n.localize(`PF1.Skill${ucFirst(subSkillId)}`)),
+                                        label: '- ' + (subSkill.name || pf1.config.skills[subSkillId]),
                                         onClick: () => actor.rollSkill(`${skillId}.subSkills.${subSkillId}`)
                                     },
                                     {

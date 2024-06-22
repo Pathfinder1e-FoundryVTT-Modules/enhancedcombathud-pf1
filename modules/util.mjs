@@ -1,11 +1,21 @@
-export const stripRollFlairs = (formula) => formula.replace(/\[[^\]]*]/g, "");
-
 export function ucFirst(string) {
     return string ? string.charAt(0).toUpperCase() + string.slice(1) : '';
 }
 
 export function unique(array) {
     return array.filter((value, index, self) => self.indexOf(value) === index);
+}
+
+export function getUsedSpellBookIds(actor) {
+    const spellBooks = actor.system.attributes.spells.spellbooks;
+    let usedSpellbookIds = []
+    for(let spellbookId in spellBooks) {
+        const spellBook = spellBooks[spellbookId]
+        if(spellBook.inUse) {
+            usedSpellbookIds.push(spellbookId)
+        }
+    }
+    return usedSpellbookIds
 }
 
 export function useUnchainedAction(actionType, actionCost = 1) {
@@ -179,133 +189,12 @@ export async function createBuff(actor, buffId) {
     return actor.getItemByTag(buffId);
 }
 
-export const spellSchools = {
-    abj: "PF1.SpellSchoolAbjuration",
-    con: "PF1.SpellSchoolConjuration",
-    div: "PF1.SpellSchoolDivination",
-    enc: "PF1.SpellSchoolEnchantment",
-    evo: "PF1.SpellSchoolEvocation",
-    ill: "PF1.SpellSchoolIllusion",
-    nec: "PF1.SpellSchoolNecromancy",
-    trs: "PF1.SpellSchoolTransmutation",
-    uni: "PF1.SpellSchoolUniversal",
-    misc: "PF1.Misc",
-};
-
-export const abilityTypes = {
-    ex: {
-        short: "PF1.AbilityTypeShortExtraordinary",
-        long: "PF1.AbilityTypeExtraordinary",
-    },
-    su: {
-        short: "PF1.AbilityTypeShortSupernatural",
-        long: "PF1.AbilityTypeSupernatural",
-    },
-    sp: {
-        short: "PF1.AbilityTypeShortSpell-Like",
-        long: "PF1.AbilityTypeSpell-Like",
-    },
-};
-export const weaponProperties = {
-    ato: "PF1.WeaponPropAutomatic",
-    blc: "PF1.WeaponPropBlocking",
-    brc: "PF1.WeaponPropBrace",
-    dea: "PF1.WeaponPropDeadly",
-    dst: "PF1.WeaponPropDistracting",
-    dbl: "PF1.WeaponPropDouble",
-    dis: "PF1.WeaponPropDisarm",
-    fin: "PF1.WeaponPropFinesse",
-    frg: "PF1.WeaponPropFragile",
-    grp: "PF1.WeaponPropGrapple",
-    imp: "PF1.WeaponPropImprovised",
-    mnk: "PF1.WeaponPropMonk",
-    nnl: "PF1.WeaponPropNonLethal",
-    prf: "PF1.WeaponPropPerformance",
-    rch: "PF1.WeaponPropReach",
-    sct: "PF1.WeaponPropScatter",
-    snd: "PF1.WeaponPropSunder",
-    spc: "PF1.WeaponPropSpecial",
-    thr: "PF1.WeaponPropThrown",
-    trp: "PF1.WeaponPropTrip",
-};
-
-export function simplifyFormula(formula, rollData = {}, {combine = true} = {}) {
-    const originalTerms = RollPF.parse(stripRollFlairs(formula), rollData);
-
-    const semiEvalTerms = [];
-    // Resolve sizeRoll() and some other deterministic pieces
-    while (originalTerms.length) {
-        const term = originalTerms.shift();
-
-        if (term instanceof DiceTerm) {
-            semiEvalTerms.push(term);
-        } else if (term instanceof OperatorTerm) {
-            // Combine terms resulting in a boolean
-            if ([">=", ">", "<=", "<", "==", "===", "!=", "!==", "||", "&&", "??"].includes(term.operator)) {
-                const left = semiEvalTerms.pop();
-                const right = originalTerms.shift();
-                const terms = [left, term, right];
-                const roll = RollPF.fromTerms(terms);
-                roll.evaluate({async: false});
-                semiEvalTerms.push(new NumericTerm({number: roll.total}));
-            } else {
-                semiEvalTerms.push(term);
-            }
-        } else if (term instanceof CONFIG.Dice.termTypes.SizeRollTerm) {
-            term.evaluate({async: false});
-            semiEvalTerms.push(term);
-        } else if (term.isDeterministic) {
-            const evl = RollPF.safeTotal(term.formula);
-            semiEvalTerms.push(...RollPF.parse(`${evl}`));
-        } else {
-            semiEvalTerms.push(term);
-        }
-    }
-
-    // Combine simple terms (e.g. 5+3) and resolve ternaries
-    const combinedTerms = [];
-    let prev, term;
-    while (semiEvalTerms.length) {
-        prev = term;
-        term = semiEvalTerms.shift();
-        const next = semiEvalTerms[0];
-        if (term instanceof OperatorTerm) {
-            // Ternary handling
-            if (term.operator === "?") {
-                semiEvalTerms.shift(); // remove if-true val
-                const elseOp = semiEvalTerms.shift();
-                const falseVal = semiEvalTerms.shift();
-
-                const condition = RollPF.safeTotal(prev.formula);
-                let resulting = condition ? next.formula : falseVal?.formula ?? "";
-                combinedTerms.pop(); // Remove last term
-                if (resulting) {
-                    // Unparenthetical
-                    if (/^\((.*)\)$/.test(resulting)) {
-                        resulting = resulting.slice(1, -1);
-                    }
-                    const subterms = RollPF.parse(resulting);
-                    combinedTerms.push(...subterms);
-                }
-                continue;
-            } else if (prev instanceof NumericTerm && next instanceof NumericTerm) {
-                if (combine) {
-                    const simpler = RollPF.safeEval([prev.formula, term.formula, next.formula].join(""));
-                    term = RollPF.parse(`${simpler}`)[0];
-                    combinedTerms.pop(); // Remove the last numeric term
-                    semiEvalTerms.shift(); // Remove the next term
-                }
-            }
-        }
-        combinedTerms.push(term);
-    }
-
-    return combinedTerms.map((tt) => tt.formula).join("");
-}
-
 export function renderAttackString(action) {
-    return action.item.attackArray.map((attack) => {
-        const value = Math.floor(attack)
+    const rollData = action.getRollData();
+
+    return action.getAttacks({ full: true, resolve: true, conditionals: true, bonuses: true, rollData: rollData })
+        .map((attack) => {
+        const value = Math.floor(attack.bonus)
         return (value < 0 ? "-" : "+") + value
     }).join('/');
 }
@@ -316,74 +205,6 @@ export function renderCriticalChanceString(action) {
     return (critRange === 20 ? "20" : `${critRange}-20`) + 'x' + (action.data.ability.critMult || `2`)
 }
 
-export function renderDamageString(action, rollData, options) {
-    if (!action.hasDamage) return null;
-
-    const actor = action.actor,
-        item = action.item,
-        actorData = actor?.system,
-        actionData = action.data,
-        combine = options.hash?.combine ?? true;
-
-    const parts = [];
-
-    const handleFormula = (formula, change) => {
-        try {
-            switch (typeof formula) {
-                case "string": {
-                    // Ensure @item.level and similar gets parsed correctly
-                    const rd = formula.indexOf("@") >= 0 ? change?.parent?.getRollData() ?? rollData : {};
-                    const newformula = simplifyFormula(formula, rd, {combine});
-                    if (newformula != 0) parts.push(newformula);
-                    break;
-                }
-                case "number":
-                    if (formula != 0) parts.push(`${formula}`);
-                    break;
-            }
-        } catch (err) {
-            console.error(`Formula parsing error with "${formula}"`);
-            parts.push("NaN");
-        }
-    };
-
-    const handleParts = (parts) => parts.forEach(({formula}) => handleFormula(formula));
-
-    // Normal damage parts
-    handleParts(actionData.damage.parts);
-
-    // Include ability score only if the string isn't too long yet
-    const dmgAbl = actionData.ability.damage;
-    const dmgAblMod = Math.floor((actorData?.abilities[dmgAbl]?.mod ?? 0) * (actionData.ability.damageMult || 1));
-    if (dmgAblMod != 0) parts.push(dmgAblMod);
-
-    // Include damage parts that don't happen on crits
-    handleParts(actionData.damage.nonCritParts);
-
-    // Include general sources. Item enhancement bonus is among these.
-    action.allDamageSources.forEach((s) => {
-        if (s.operator === "script") return;
-        handleFormula(s.formula, s);
-    });
-
-    if (parts.length === 0) parts.push("NaN"); // Something probably went wrong
-
-    const simplifyMath = (formula) =>
-        formula
-            .replace(/\s+/g, "") // remove whitespaces
-            .replace(/\+-/g, "-") // + -n = -n
-            .replace(/--/g, "+") // - -n = +n
-            .replace(/-\+/g, "-") // - +n = -n
-            .replace(/\+\++/g, "+"); // + +n = +n
-
-    const semiFinal = simplifyMath(parts.join("+"));
-    if (semiFinal === "NaN") return semiFinal;
-    if (!combine) return semiFinal;
-    // With combine enabled, the following turns 1d12+1d8+6-8+3-2 into 1d12+1d8-1
-    const final = simplifyFormula(semiFinal, null, {combine});
-    return simplifyMath(final);
-}
-
 export async function renderSaveString(action, rollData) {
     const saveType = game.i18n.localize(`PF1.SavingThrow${ucFirst(action.data.save.type)}`);
 
@@ -392,7 +213,7 @@ export async function renderSaveString(action, rollData) {
         saveDC += action.item.spellbook.baseDCFormula;
     }
 
-    saveDC = (await RollPF.safeRoll(saveDC, rollData)).total;
+    saveDC = RollPF.safeRollSync(saveDC, rollData, {}, {}).total;
 
     const threshold = game.i18n.localize("PF1.DCThreshold").replace('{threshold}', saveDC);
 
@@ -400,8 +221,7 @@ export async function renderSaveString(action, rollData) {
 }
 
 export function renderTemplateString(action) {
-
-    const targetType = game.i18n.localize(`PF1.MeasureTemplate${ucFirst(action.data.measureTemplate.type)}`);
+    const targetType = CONFIG.MeasuredTemplate.types[action.data.measureTemplate.type];
     const distance = pf1.utils.convertDistance(action.data.measureTemplate.size);
     return `${targetType} ${distance[0]} ${distance[1]}`;
 }
