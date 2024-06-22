@@ -5,6 +5,7 @@
 - Only allow weapons with attack actions and attacks for weapon sets
 - Remove background skills from drawer when not active
 - Fix movement calculation for diagonals
+- Make avatar defense values uniform width to avoid visual jump on hover
 
 ## 0.9.4
 - Top-align portrait tooltips to avoid overlapping actual text

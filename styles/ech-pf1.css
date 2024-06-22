@@ -26,6 +26,7 @@
     flex-direction: column;
 }
 
+.extended-combat-hud .portrait-hud:hover .portrait-stat-block.stacked-stats > .portrait-stat.hidden,
 .extended-combat-hud .portrait-stat-block.stacked-stats > .portrait-stat {
     height: 2rem;
     transition: height 500ms, font-size 500ms;
@@ -35,12 +36,11 @@
 }
 
 .extended-combat-hud .portrait-stat-block.stacked-stats > .portrait-stat.hidden {
-    display: none;
+    overflow: hidden;
+    height: 0;
+    padding: 0 0.35rem;
 }
 
-.extended-combat-hud .portrait-hud:hover .portrait-stat-block.stacked-stats > .portrait-stat.hidden {
-    display: flex;
-}
 
 .extended-combat-hud .portrait-stat-block.stacked-stats.left {
     left: 0;
