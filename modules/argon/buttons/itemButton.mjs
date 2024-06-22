@@ -257,7 +257,6 @@ export function itemButton(ARGON) {
                     })
                 }
 
-                console.log(action)
                 if (action.data.duration.value) {
                     details.push({
                         label: game.i18n.localize("PF1.Duration"),
