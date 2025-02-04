@@ -67,7 +67,7 @@ export function playerPortraitPanel(ARGON) {
         }
 
         _getColor(currentValue, maxValue) {
-            const currentPercentage = Math.clamped(currentValue, 0, maxValue) / maxValue;
+            const currentPercentage = Math.clamp(currentValue, 0, maxValue) / maxValue;
             return `rgb(${(1 - currentPercentage / 2) * 256}, ${currentPercentage * 256}, 0)`;
         }
 
