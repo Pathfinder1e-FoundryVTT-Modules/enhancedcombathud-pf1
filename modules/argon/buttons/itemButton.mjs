@@ -150,7 +150,7 @@ export function itemButton(ARGON) {
                         }
                     }
 
-                    if (item.system.material.normal.value) {
+                    if (item.system.material?.normal?.value) {
                         properties.push({
                             label: item.system.material.normal.custom
                                 ? item.system.material.normal.value
@@ -158,14 +158,14 @@ export function itemButton(ARGON) {
                         })
                     }
 
-                    if (item.system.enh || item.system.material.addon.includes("magic")) {
+                    if (item.system.enh || item.system.material?.addon?.includes("magic")) {
                         properties.push({
                             label: game.i18n.localize("PF1.Materials.Types.magic")
                                 + (item.system.enh ? " (+" + item.system.enh + ')' : "")
                         })
                     }
 
-                    if (item.system.material.addon.includes("epic")) {
+                    if (item.system.material?.addon?.includes("epic")) {
                         properties.push({
                             label: game.i18n.localize("PF1.Materials.Types.epic")
                         })
