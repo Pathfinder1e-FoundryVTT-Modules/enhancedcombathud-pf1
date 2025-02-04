@@ -96,7 +96,7 @@ export async function createBuff(actor, buffId) {
                 "tags": [],
                 "changes": [{
                     "_id": "ntuwfvbl",
-                    "formula": "@skills.acr.rank>=3?6:4",
+                    "formula": "ifThenElse(gte(@skills.acr.rank, 3), 6, 4)",
                     "operator": "add",
                     "subTarget": "ac",
                     "modifier": "dodge",
@@ -145,7 +145,7 @@ export async function createBuff(actor, buffId) {
                 "tags": [],
                 "changes": [{
                     "_id": "zmpj4gpd",
-                    "formula": "@skills.acr.rank>=3?3:2",
+                    "formula": "ifThenElse(gte(@skills.acr.rank, 3), 3, 2)",
                     "subTarget": "ac",
                     "modifier": "dodge",
                     "operator": "add",
