@@ -6,7 +6,7 @@ export function playerPortraitPanel(ARGON) {
         get usesWoundsVigor() {
             const healthConfig = game.settings.get("pf1", "healthConfig");
             const actorType = this.actor.type || "npc";
-            return healthConfig.variants[actorType === "character" ? "pc" : "npc"].useWoundsAndVigor;
+            return healthConfig[actorType === "character" ? "pc" : "npc"].rules.useWoundsAndVigor;
         }
 
         get description() {

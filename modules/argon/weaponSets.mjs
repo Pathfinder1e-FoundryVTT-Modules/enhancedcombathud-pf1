@@ -59,7 +59,7 @@ export function weaponSets(ARGON) {
         }
 
         async _getSets() {
-            const sets = mergeObject(await this.getDefaultSets(), deepClone(this.actor.getFlag("enhancedcombathud", "weaponSets") || {}));
+            const sets = foundry.utils.mergeObject(await this.getDefaultSets(), foundry.utils.deepClone(this.actor.getFlag("enhancedcombathud", "weaponSets") || {}));
 
             for (const [set, slots] of Object.entries(sets)) {
                 slots.primary = typeof slots.primary === "string" ? await this.actor.items.get(slots.primary) : slots.primary;
