@@ -25,12 +25,12 @@ export function movementHud(ARGON) {
             if (updates.x === undefined && updates.y === undefined) return;
             const dimensions = canvas.dimensions.distance;
 
-            const distanceX = Math.floor(canvas.grid.measureDistance({
+            const distanceX = Math.floor(canvas.grid.measurePath({
                 x: this.token.x,
                 y: 0
             }, {x: updates.x ?? this.token.x, y: 0}, {gridSpaces: true}) / dimensions);
 
-            const distanceY = Math.floor(canvas.grid.measureDistance({x: 0, y: this.token.y}, {
+            const distanceY = Math.floor(canvas.grid.measurePath({x: 0, y: this.token.y}, {
                 x: 0,
                 y: updates.y ?? this.token.y
             }, {gridSpaces: true}) / dimensions);

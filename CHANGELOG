@@ -1,6 +1,7 @@
 ## 0.11.2
 - Fix item tooltips breaking when no material data is available
 - Fix additional deprecation warnings
+- Fix rest button not working
 
 ## 0.11.1
 - Additional compatibility fixes for PathfinderV1 v11
