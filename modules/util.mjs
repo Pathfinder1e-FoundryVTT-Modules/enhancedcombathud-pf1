@@ -200,15 +200,15 @@ export function renderAttackString(action) {
 }
 
 export function renderCriticalChanceString(action) {
-    const critRange = action.data.ability.critRange;
+    const critRange = action.ability.critRange;
 
-    return (critRange === 20 ? "20" : `${critRange}-20`) + 'x' + (action.data.ability.critMult || `2`)
+    return (critRange === 20 ? "20" : `${critRange}-20`) + 'x' + (action.ability.critMult || `2`)
 }
 
 export async function renderSaveString(action, rollData) {
-    const saveType = game.i18n.localize(`PF1.SavingThrow${ucFirst(action.data.save.type)}`);
+    const saveType = game.i18n.localize(`PF1.SavingThrow${ucFirst(action.save.type)}`);
 
-    let saveDC = action.data.save.dc;
+    let saveDC = action.save.dc || 0;
     if (action.item.type === "spell") {
         saveDC += action.item.spellbook.baseDCFormula;
     }
@@ -221,7 +221,7 @@ export async function renderSaveString(action, rollData) {
 }
 
 export function renderTemplateString(action) {
-    const targetType = CONFIG.MeasuredTemplate.types[action.data.measureTemplate.type];
-    const distance = pf1.utils.convertDistance(action.data.measureTemplate.size);
+    const targetType = CONFIG.MeasuredTemplate.types[action.measureTemplate.type];
+    const distance = pf1.utils.convertDistance(action.measureTemplate.size);
     return `${targetType} ${distance[0]} ${distance[1]}`;
 }
