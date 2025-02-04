@@ -23,7 +23,6 @@ export function movementHud(ARGON) {
 
         onTokenUpdate(updates, context) {
             if (updates.x === undefined && updates.y === undefined) return;
-            console.log(updates, context)
             const dimensions = canvas.dimensions.distance;
 
             const distanceX = Math.floor(canvas.grid.measureDistance({
