@@ -3,7 +3,6 @@ import {
     renderCriticalChanceString,
     renderSaveString,
     renderTemplateString,
-    ucFirst,
     useAction,
     useUnchainedAction
 } from "../../util.mjs";
@@ -38,7 +37,7 @@ export function itemButton(ARGON) {
         }
 
         get actionCost() {
-            return this.isUnchained ? this.item.defaultAction?.data.activation.unchained.cost : 1;
+            return this.isUnchained ? this.item.defaultAction?.activation.unchained.cost : 1;
         }
 
         get isValid() {
@@ -86,25 +85,29 @@ export function itemButton(ARGON) {
                             return {label: type.trim()}
                         })
 
-                    if (item.system.subschool) {
+                    if (item.system.subschool.total.size) {
                         details.push({
-                            label: game.i18n.localize("PF1.SubSchool"),
-                            value: ucFirst(item.system.subschool)
+                            label: game.i18n.localize("PF1.Subschool"),
+                            value: item.system.subschool.names.join(", ")
                         })
                     }
 
-                    details.push({
-                        label: game.i18n.localize("PF1.Components"),
-                        value: Object.entries(item.system.components)
-                            .filter(comp => comp[1])
-                            .map(comp => pf1.config.spellComponents[comp[0]])
-                            .join(", ")
-                    })
+                    const components = Object.entries(item.system.components)
+                        .filter(comp => comp[1])
+                        .map(comp => pf1.config.spellComponents[comp[0]])
+                        .filter(comp => comp);
 
-                    if (item.defaultAction.data.spellEffect) {
+                    if (components.length) {
+                        details.push({
+                            label: game.i18n.localize("PF1.Components"),
+                            value: components.join(", ")
+                        })
+                    }
+
+                    if (item.defaultAction.effect) {
                         details.push({
                             label: game.i18n.localize("PF1.SpellEffect"),
-                            value: item.defaultAction.data.spellEffect
+                            value: item.defaultAction.effect
                         })
                     }
 
@@ -125,12 +128,7 @@ export function itemButton(ARGON) {
                         })
                 // Intentional fallthrough
                 case "attack":
-                    const weaponGroupData = item.system.weaponGroups;
-                    let weaponGroups = weaponGroupData.value.map((group) => pf1.config.weaponGroups[group]);
-                    if (weaponGroupData.custom.length) {
-                        weaponGroups.push(...weaponGroupData.custom);
-                    }
-                    subtitle = weaponGroups.join(", ");
+                    subtitle = Array.from(item.system.weaponGroups.total).join(", ");
 
                     if (item.system.masterwork) {
                         properties.push({
@@ -162,14 +160,14 @@ export function itemButton(ARGON) {
 
                     if (item.system.enh || item.system.material.addon.includes("magic")) {
                         properties.push({
-                            label: game.i18n.localize("PF1.Materials.Types.Magic")
+                            label: game.i18n.localize("PF1.Materials.Types.magic")
                                 + (item.system.enh ? " (+" + item.system.enh + ')' : "")
                         })
                     }
 
                     if (item.system.material.addon.includes("epic")) {
                         properties.push({
-                            label: game.i18n.localize("PF1.Materials.Types.Epic")
+                            label: game.i18n.localize("PF1.Materials.Types.epic")
                         })
                     }
 
@@ -212,7 +210,7 @@ export function itemButton(ARGON) {
                         value: renderCriticalChanceString(action)
                     })
 
-                    if (action.data.touch) {
+                    if (action.touch) {
                         details.push({
                             label: game.i18n.localize("PF1.TouchAttack"),
                             value: game.i18n.localize("PF1.Yes")
@@ -250,17 +248,17 @@ export function itemButton(ARGON) {
                     })
                 }
 
-                if (action.data.target.value) {
+                if (action.target.value) {
                     details.push({
                         label: game.i18n.localize("PF1.Targets"),
-                        value: action.data.target.value
+                        value: action.target.value
                     })
                 }
 
-                if (action.data.duration.value) {
+                if (action.duration.value) {
                     details.push({
                         label: game.i18n.localize("PF1.Duration"),
-                        value: action.data.duration.value + ' ' + pf1.config.timePeriods[action.data.duration.units]
+                        value: action.duration.value + ' ' + pf1.config.timePeriods[action.duration.units]
                     })
                 }
 

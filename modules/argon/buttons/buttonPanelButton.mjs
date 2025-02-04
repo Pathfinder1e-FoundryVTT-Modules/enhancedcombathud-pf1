@@ -146,12 +146,12 @@ export function buttonPanelItemButton(ARGON) {
 
                 for (let action of item.actions) {
                     if (this.isUnchained) {
-                        if (action.data.activation.unchained.type === this.actionType) {
+                        if (action.activation.unchained.type === this.actionType) {
                             return true;
                         }
                     } else {
-                        if (action.data.activation.type === this.actionType
-                            && action.data.activation.cost === 1) {
+                        if (action.activation.type === this.actionType
+                            && action.activation.cost === 1) {
                             return true;
                         }
                     }
@@ -295,12 +295,12 @@ export function spellbookButtonPanelActionButton(ARGON) {
 
                 for (let action of item.actions) {
                     if (this.isUnchained) {
-                        if (action.data.activation.unchained.type === this.actionType) {
+                        if (action.activation.unchained.type === this.actionType) {
                             return true;
                         }
                     } else {
-                        if (action.data.activation.type === this.actionType
-                            && action.data.activation.cost === 1) {
+                        if (action.activation.type === this.actionType
+                            && action.activation.cost === 1) {
                             return true;
                         }
                     }
@@ -400,12 +400,12 @@ export function spellButtonPanelActionButton(ARGON) {
 
                 for (let action of item.actions) {
                     if (this.isUnchained) {
-                        if (action.data.activation.unchained.type === this.actionType) {
+                        if (action.activation.unchained.type === this.actionType) {
                             return true;
                         }
                     } else {
-                        if (action.data.activation.type === this.actionType
-                            && action.data.activation.cost === 1) {
+                        if (action.activation.type === this.actionType
+                            && action.activation.cost === 1) {
                             return true;
                         }
                     }
