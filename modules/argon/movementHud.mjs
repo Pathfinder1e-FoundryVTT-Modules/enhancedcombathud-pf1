@@ -23,46 +23,48 @@ export function movementHud(ARGON) {
 
         onTokenUpdate(updates, context) {
             if (updates.x === undefined && updates.y === undefined) return;
-            console.log(updates, context)
             const dimensions = canvas.dimensions.distance;
 
-            const distanceX = Math.floor(canvas.grid.measureDistance({
+            const distance = canvas.grid.measurePath([{
                 x: this.token.x,
-                y: 0
-            }, {x: updates.x ?? this.token.x, y: 0}, {gridSpaces: true}) / dimensions);
-
-            const distanceY = Math.floor(canvas.grid.measureDistance({x: 0, y: this.token.y}, {
-                x: 0,
+                y: this.token.y
+            }, {
+                x: updates.x ?? this.token.x,
                 y: updates.y ?? this.token.y
-            }, {gridSpaces: true}) / dimensions);
+            }], {gridSpaces: true});
 
-            const diagonals = Math.min(distanceX, distanceY);
-            const straights = Math.abs(distanceX - distanceY);
-            const diagonalRule = game.settings.get("pf1", "diagonalMovement");
+            let spaces = distance.distance / dimensions;
+            const totalDiagonals = this.movedDiagonals + distance.diagonals;
+            const newDiagonals = distance.diagonals;
 
-            let distance = straights;
-            switch(diagonalRule) {
-                case "555":
-                    distance += diagonals;
+            const diagonalSetting = game.settings.get("core", "gridDiagonals");
+            console.log(totalDiagonals, totalDiagonals % 2);
+            switch(diagonalSetting) {
+                case 4: {
+                    // 1/2/1
+                    const method = !!(totalDiagonals % 2) === !!context?.isUndo ? Math.ceil : Math.floor;
+                    spaces += method(newDiagonals / 2);
                     break;
+                }
 
-                case "5105":
-                    const diagonalDistance = diagonals * 1.5;
-                    distance += !!(this.movedDiagonals % 2) === !!context?.isUndo ? Math.floor(diagonalDistance) : Math.ceil(diagonalDistance);
+                case 5:
+                    // 2/1/2
+                    const method = !!(totalDiagonals % 2) === !!context?.isUndo ? Math.floor : Math.ceil;
+                    spaces += method(newDiagonals / 2);
                     break;
 
                 default:
-                    console.error("Movement rule not supported.");
-                    distance += diagonals;
                     break;
             }
 
+            console.log(distance);
+
             if (context?.isUndo) {
-                this.movementUsed -= distance;
-                this.movedDiagonals -= diagonals;
+                this.movementUsed -= spaces;
+                this.movedDiagonals -= distance.diagonals;
             } else {
-                this.movementUsed += distance;
-                this.movedDiagonals += diagonals;
+                this.movementUsed += spaces;
+                this.movedDiagonals += distance.diagonals;
             }
             this.updateMovement();
         }
@@ -78,7 +80,6 @@ export function movementHud(ARGON) {
                             this.triggerCount++;
                         }
                     } else {
-
                         if (this.movementUsed > 1) {
                             useAction("move");
                             this.triggerCount++;

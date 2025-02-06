@@ -1,3 +1,15 @@
+## 0.11.2
+- Fix item tooltips breaking when no material data is available
+- Fix additional deprecation warnings
+- Fix rest button not working
+- Fix movement calculation
+
+## 0.11.1
+- Additional compatibility fixes for PathfinderV1 v11
+
+## 0.11.0
+- PathfinderV1 v11 compatibility
+
 ## 0.10.1
 - Update for Pathfinder v10
 - Expand item tooltips to include more useful information

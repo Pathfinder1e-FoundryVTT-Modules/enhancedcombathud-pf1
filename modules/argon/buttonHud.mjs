@@ -8,11 +8,12 @@ export function buttonHud(ARGON) {
                     "onClick": () => {
                         const ActorRestDialog = pf1.applications.actor.ActorRestDialog;
 
-                        const app = Object.values(this.actor.apps).find((o) => {
-                            return o instanceof ActorRestDialog && o._element;
-                        });
-                        if (app) app.render(true, {focus: true});
-                        else new ActorRestDialog(this.actor).render(true);
+                        const app = Object.values(this.actor.apps).find((app) => app instanceof ActorRestDialog);
+                        if (app) {
+                            app.render(true);
+                            app.bringToFront();
+                        } else new ActorRestDialog({ document: this.actor }).render({ force: true });
+
                     }
                 }
             ];
