@@ -58,7 +58,7 @@
   "readme": "README.md",
   "license": "LICENSE",
   "bugs": "https://github.com/KitCat420/enhancedcombathud-pf1/issues",
-  "url": "https://github.com/Pathfinder1e-FoundryVTT-Modules/enhancedcombathud-pf1",
-  "manifest": "https://github.com/Pathfinder1e-FoundryVTT-Modules/enhancedcombathud-pf1/releases/latest/download/module.json",
-  "download": "https://github.com/Pathfinder1e-FoundryVTT-Modules/enhancedcombathud-pf1/releases/download/v0.11.2/module.zip"
+  "url": "#{URL}",
+  "manifest": "#{MANIFEST}",
+  "download": "#{DOWNLOAD}"
 }
