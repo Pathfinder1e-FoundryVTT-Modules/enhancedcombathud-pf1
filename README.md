@@ -7,7 +7,7 @@ An implementation of the [Argon - Combat HUD](https://foundryvtt.com/packages/en
 This module currently supports the following languages:
 - English
 - German (Deutsch)
-- French (Huge Thanks to @guillaume-gc)
+- French (Huge Thanks to [@guillaume-gc](https://github.com/guillaume-gc))
 
 Should you wish to contribute further languages, please feel free to open a pull request or contact me directly.
 
