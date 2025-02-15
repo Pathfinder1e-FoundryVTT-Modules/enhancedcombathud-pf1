@@ -8,7 +8,7 @@ This module currently supports the following languages:
 - English
 - German (Deutsch)
 - French (Huge Thanks to [@guillaume-gc](https://github.com/guillaume-gc))
-- Chinese (Hue Thanks to [@NaricaNardica](https://github.com/NaricaNardica))
+- Chinese (Huge Thanks to [@NaricaNardica](https://github.com/NaricaNardica))
 
 Should you wish to contribute further languages, please feel free to open a pull request or contact me directly.
 

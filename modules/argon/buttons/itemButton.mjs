@@ -37,7 +37,7 @@ export function itemButton(ARGON) {
         }
 
         get actionCost() {
-            return this.isUnchained ? this.item.defaultAction?.activation.unchained.cost : 1;
+            return this.isUnchained ? this.item.defaultAction?.activation.cost : 1;
         }
 
         get isValid() {
@@ -175,15 +175,15 @@ export function itemButton(ARGON) {
 
                 case "equipment":
                     if (item.system.subType === "wondrous") {
-                        subtitle = item.system.subType ? pf1.config.equipmentSlots[item.system.slot] : null;
+                        subtitle = item.system.subType ? pf1.config.equipmentSlots.wondrous[item.system.slot] : null;
                     } else {
-                        subtitle = item.system.subType ? pf1.config.equipmentTypes[item.system.subType] : null;
+                        subtitle = item.system.subType ? pf1.config.equipmentTypes[item.system.subType]._label : null;
                     }
 
                     if (item.system.armor.value) {
                         details.push({
                             label: game.i18n.localize("PF1.ACNormal"),
-                            value: ('+' + item.system.armor.value).replace('+-', '-')
+                            value: ('+' + (item.system.armor.value + item.system.armor.enh)).replace('+-', '-')
                         })
                         details.push({
                             label: game.i18n.localize("PF1.MaxDexShort"),
