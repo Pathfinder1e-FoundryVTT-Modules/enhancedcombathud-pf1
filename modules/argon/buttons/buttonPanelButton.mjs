@@ -136,28 +136,14 @@ export function buttonPanelItemButton(ARGON) {
         get validItems() {
             const itemsOfType = this.actor.items.filter(item => item.type === this.type);
             return itemsOfType.filter(item => {
-                if (!item.actions) {
+                if (
+                    !item.actions?.size
+                    || (item.isCharged && !item.charges)
+                ) {
                     return false;
                 }
 
-                if (item.isCharged && !item.charges) {
-                    return false;
-                }
-
-                for (let action of item.actions) {
-                    if (this.isUnchained) {
-                        if (action.activation.unchained.type === this.actionType) {
-                            return true;
-                        }
-                    } else {
-                        if (action.activation.type === this.actionType
-                            && action.activation.cost === 1) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
+                return item.actions.some(action => action.activation.type === this.actionType && action.activation.cost <= this.parent.maxActions);
             });
         }
 
@@ -173,8 +159,10 @@ export function buttonPanelItemButton(ARGON) {
             switch (this.type) {
                 case "consumable":
                     return `modules/${ModuleName}/icons/vial.svg`;
+
                 case "equipment":
                     return `modules/${ModuleName}/icons/gem-chain.svg`;
+
                 case "feat":
                     return "modules/enhancedcombathud/icons/svg/mighty-force.svg";
             }
@@ -293,20 +281,7 @@ export function spellbookButtonPanelActionButton(ARGON) {
                     }
                 }
 
-                for (let action of item.actions) {
-                    if (this.isUnchained) {
-                        if (action.activation.unchained.type === this.actionType) {
-                            return true;
-                        }
-                    } else {
-                        if (action.activation.type === this.actionType
-                            && action.activation.cost === 1) {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
+                return item.actions.some(action => action.activation.type === this.actionType && action.activation.cost <= this.parent.maxActions);
             });
         }
 
@@ -381,7 +356,7 @@ export function spellButtonPanelActionButton(ARGON) {
                 if (item.type !== "spell") continue;
 
                 if (!item.canUse) {
-                   continue;
+                    continue;
                 }
 
                 if (item.spellbook.spellPreparationMode === "prepared" && !item.useSpellPoints()) {
@@ -396,19 +371,10 @@ export function spellButtonPanelActionButton(ARGON) {
 
                 if (!usedSpellbooks.includes(item.system.spellbook)) continue;
 
-                if (!item.actions) continue;
+                if (!item.actions?.size) continue;
 
-                for (let action of item.actions) {
-                    if (this.isUnchained) {
-                        if (action.activation.unchained.type === this.actionType) {
-                            return true;
-                        }
-                    } else {
-                        if (action.activation.type === this.actionType
-                            && action.activation.cost === 1) {
-                            return true;
-                        }
-                    }
+                if(item.actions.some(action => action.activation.type === this.actionType && action.activation.cost <= this.parent.maxActions)) {
+                    return true;
                 }
             }
 

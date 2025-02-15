@@ -1,3 +1,11 @@
+## 0.12.0
+- Add Chinese Translation (Huge Thanks to [@NaricaNardica](https://github.com/NaricaNardica))
+- Add French Translation (Huge Thanks to [@guillaume-gc](https://github.com/guillaume-gc))
+- Fix unchained action economy crashing combat hud
+- Fix equipment tooltips showing broken data
+- No longer exclude actions with an activation cost larger than 1 action (mostly relevant for UC action economy)
+- Fix unchained action economy cost not being properly deducted
+
 ## 0.11.2
 - Fix item tooltips breaking when no material data is available
 - Fix additional deprecation warnings
