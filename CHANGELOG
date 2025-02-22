@@ -1,3 +1,6 @@
+## 0.12.1
+- Fix spellbook button for actors with multiple spellbooks not opening spellbook selection
+
 ## 0.12.0
 - Add Chinese Translation (Huge Thanks to [@NaricaNardica](https://github.com/NaricaNardica))
 - Add French Translation (Huge Thanks to [@guillaume-gc](https://github.com/guillaume-gc))
