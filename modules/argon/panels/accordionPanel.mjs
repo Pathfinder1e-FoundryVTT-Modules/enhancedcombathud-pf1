@@ -29,7 +29,7 @@ export function accordionPanel(ARGON) {
         }
 
         async toggleDefaults() {
-            this._subPanels[0].toggle(true)
+            this._subPanels[0]?.toggle(true)
         }
 
         hideAll() {
